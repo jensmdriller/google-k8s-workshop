@@ -7,6 +7,65 @@ Module objectives
 1. Build application Docker image
 1. Run application locally
 
+---
+
+Theory
+------
+
+Containers are units of software delivery (run everywhere, run anything)
+
+- impose resource limits (CPU, memory, disk, etc.) on the process
+- provide isolation via namespaces (users, processes, network, mounts, etc.)
+- Copy-on-write storage
+- Share kernel with host
+- No device emulation
+
+Pods are the smallest deployable unit in Kubernetes.
+
+- may have one or several containers inside
+- All containers run on the same node
+- Network and storage are shared
+- Usually managed by controller
+
+Kubernetes supports pluggable container runtime
+
+- Docker
+- Rkt
+- CRI-O runC
+- containerd
+
+Multi-Container Pod Use Cases
+
+- Gather logs
+- Monitor metrics
+- Proxy network connections 
+- Adapters
+
+Pod phases during lifetime
+
+- Pending
+- Running
+- Succeded
+- Failed
+- Unknown
+
+Pod Condition Types
+
+- PodScheduled
+- Ready
+- Initialized
+- Unschedulable
+
+Pod Statuses
+
+- True
+- False
+- Unknown
+
+More information about pods is in [Pod lifecycle reference](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)
+
+---
+
 Build application Docker image
 ------------------------------
 
