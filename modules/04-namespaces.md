@@ -9,9 +9,17 @@ Module objectives
 Namespaces
 ----------
 
-Namespaces provide for a scope of Kubernetes objects. You can think of it as a workspace you're sharing with other users. 
+Namespaces provide for a scope of Kubernetes objects. You can think of it as a workspace you're sharing with other users.
 
-Many objects such as pods and services are namespaced, while some (like nodes) are not.
+With namespaces one may have several virtual clusters backed by the same physical cluster. Names are unique within a namespace, but not across namespaces.
+
+Cluster administrator can divide physical resources between namespaces using quotas.
+
+Namespaces cannot be nested.
+
+Low-level infrastructure resources like Nodes and PersistentVolumes are not associated with a particular namespace
+
+---
 
 1. List all namespaces in the system.
     ```
