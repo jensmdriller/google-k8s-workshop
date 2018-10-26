@@ -44,11 +44,41 @@ Quota measures usage if a resource matches the intersection of enumerated scopes
 - BestEffort - Match pods that have best effort quality of service.
 - NotBestEffort - Match pods that do not have best effort quality of service.
 
+`ResourceQuota` constraint to limit aggregated resource consumption per namespace
+
+One can limit these resource types:
+
+- compute (cpu and memory)
+- extended resources (GPU) (v1.10)
+- storage
+- object count (v1.9)
+
+Compute resource quota constrains these resource types:
+
+- limits.cpu
+- limits.memory
+- requests.cpu
+- requests.memory
+
+Storage Resource Quota constrains these resource types:
+
+- requests.storage
+- persistentvolumeclaims
+
+Also one can limit consumption based on `StorageClass`
+
+One needs to specify requests or limits for each incoming container if quota has value specified for one of those. LimitRange object specifies minimum and maximum for incoming objects. If incoming object does not specify the value it gets default value from the LimitRange.
+
 Further reading:
 
 1. [Resource quality of service implementation details](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node/resource-qos.md)
 1. [Specifying CPU limits for a pod](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
 1. [Resource types in Kubernetes](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/)
+1. [Quota reference documentation](https://kubernetes.io/docs/concepts/policy/resource-quotas/)
+1. [Setting storage limits](https://kubernetes.io/docs/tasks/administer-cluster/quota-api-object/)
+1. [Setting memory limits( https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/quota-memory-cpu-namespace/)]
+1. [LimitRange usage example](https://kubernetes.io/docs/tasks/administer-cluster/limit-storage-consumption/)
+
 
 ---
 
