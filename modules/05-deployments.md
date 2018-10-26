@@ -63,22 +63,22 @@ You'll have two primary environments—[canary](http://martinfowler.com/bliki/Ca
 1. Create the canary and production Deployments
 
     ```shell
-    $ kubectl --namespace=prod apply -f k8s/production
-    $ kubectl --namespace=prod apply -f k8s/canary
+    $ kubectl apply -f k8s/production
+    $ kubectl apply -f k8s/canary
     ```
 
 1. Scale the production service:
 
     ```shell
-    $ kubectl --namespace=prod scale deployment gceme-frontend-production --replicas=4
+    $ kubectl scale deployment gceme-frontend-production --replicas=4
     ```
 
 1. Check deployment, replica set and pods, created by the previous command.
 
     ```
-    kubectl --namespace=prod get deploy
-    kubectl --namespace=prod get rs
-    kubectl --namespace=prod get pods
+    kubectl get deploy
+    kubectl get rs
+    kubectl get pods
     ```
 
 Exercises
