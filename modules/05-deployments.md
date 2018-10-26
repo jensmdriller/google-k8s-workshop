@@ -60,14 +60,57 @@ You'll have two primary environments—[canary](http://martinfowler.com/bliki/Ca
     secret/mysql created
     ```
 
+1. Create manifest to deploy MySQL database
+
+    ```
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    metadata:
+    name: mysql
+    labels:
+        app: mysql
+        role: db
+    spec:
+    replicas: 1
+    selector:
+        matchLabels:
+        app: mysql
+    template:
+        metadata:
+        labels:
+            app: mysql
+        spec:
+        containers:
+            - image: mysql:5.6
+            name: mysql
+            env:
+                - name: MYSQL_ROOT_PASSWORD
+                valueFrom:
+                    secretKeyRef:
+                    name: mysql
+                    key: password
+            ports:
+                - containerPort: 3306
+                name: mysql
+    ```
+
+    Save it as `k8s/training/db.yaml`.
+
+1. Deploy MySQL to Kubernetes
+
+    ```
+    $ kubectl apply -f k8s/training/db.yaml
+    ```
+
 1. Create the canary and production Deployments
 
     ```shell
-    $ kubectl apply -f k8s/production
+    $ kubectl apply -f k8s/production/backend-production.yaml
+    $ kubectl apply -f k8s/production/frontend-production.yaml
     $ kubectl apply -f k8s/canary
     ```
 
-1. Scale the production service:
+1. Scale the production deployment:
 
     ```shell
     $ kubectl scale deployment gceme-frontend-production --replicas=4
@@ -76,9 +119,9 @@ You'll have two primary environments—[canary](http://martinfowler.com/bliki/Ca
 1. Check deployment, replica set and pods, created by the previous command.
 
     ```
-    kubectl get deploy
-    kubectl get rs
-    kubectl get pods
+    $ kubectl get deploy
+    $ kubectl get rs
+    $ kubectl get pods
     ```
 
 Exercises
@@ -86,4 +129,4 @@ Exercises
 
 1. Optional: Investigate source code of the sample
 
-    Look at manifests in `k8s/prod` and `k8s/canary` folders
+    Look at manifests in `k8s/production` and `k8s/canary` folders
