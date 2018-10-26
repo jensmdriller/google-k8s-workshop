@@ -8,6 +8,50 @@ Module objectives
 - Limit the CPU & memory available for a namespace
 - Set the default request and limit for a namespace
 
+---
+
+Theory
+------
+
+Some resources like CPU and network may be throttled - they are called compressible resources. Other like memory and storage are incompressible.
+
+To enable for the cluster pass `ResourceQuota` flag as an argument for API server option `--enable-admission-plugins=`
+
+Resource Request
+
+- The Kubernetes scheduler will place a pod on the node that has specified amount of resources
+- A pod is guaranteed the amount of resources it has requested
+- Scheduling will fail for a pod that has requested more resources than is available in the cluster or has exceeded the quota
+
+Resource Limit
+
+- A pod that exceeds its limit of incompressible resource will be terminated
+- A pod that exceeded limit of compressible resource will be throttled
+- A pod restart policy defines the behavior of the terminated pod
+
+Always Set Limits on Your Pods! QoS levels:
+
+- Guaranteed: top-priority, may be killed only when exceed their limits
+- Burstable: guaranteed minimum resource amount and can use more resources when available
+- Best-effort: first to be killed under pressure
+
+To give pods maximum QoS level, set request and limit to the same value.
+
+Quota measures usage if a resource matches the intersection of enumerated scopes
+
+- Terminating - Match pods where .spec.activeDeadlineSeconds >= 0
+- NotTerminating - Match pods where .spec.activeDeadlineSeconds is nil
+- BestEffort - Match pods that have best effort quality of service.
+- NotBestEffort - Match pods that do not have best effort quality of service.
+
+Further reading:
+
+1. [Resource quality of service implementation details](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node/resource-qos.md)
+1. [Specifying CPU limits for a pod](https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/)
+1. [Resource types in Kubernetes](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/)
+
+---
+
 ## Exercise 01: limit the number of pods running in the namespace
 
 You can limit the number of objects user can create in the namespace. For instance, in this excercise you will limit the number of running pods to 2.
