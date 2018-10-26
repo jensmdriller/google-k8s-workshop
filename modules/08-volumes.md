@@ -4,7 +4,34 @@ Volumes
 Module objectives
 -----------------
 
-Add a volume to the deployment 
+- Add a volume to the deployment
+- Use static volume provisioning
+- Examine how Kubernetes reattaches the volume
+
+---
+
+Theory
+------
+
+Persistent Volume (PV) is a piece of storage in the cluster provisioned by an administrator. It captures the details of the storage implementation. Volume has independent lifecycle from a Pod.
+
+PersistentVolumeClaim (PVC) is a request for storage by a user. PVC consumes PV resources like Pod consumes Node resources. StorageClass provides different PVs types.
+
+Access modes
+
+- ReadWriteOnce (RWO)
+- ReadOnlyMany (ROX)
+- ReadWriteMany (RWX)
+
+Pods access storage using the PVC as a volume. PVCs must be in the same namespace as the pod.
+
+Storage Class is a way for admins to offer storage “classes” to end users.
+
+- Different QoS levels
+- Backup policies
+- Speed of storage hardware
+
+---
 
 In this lab you will add persistent storage volume to the MySQL pod.
 
