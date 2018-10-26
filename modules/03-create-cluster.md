@@ -38,11 +38,10 @@ In this module you will use Google Kubernetes Engine (GKE) managed service to de
     kubeconfig entry generated for jenkins-cd.
     ```
 
-3. Verify that you can connect to the cluster
+3. Verify that you can connect to the cluster and list the nodes
 
     ```shell
-    $ kubectl get pods
-    No resources found.
+    $ kubectl get nodes
     ```
 
 Cluster is up.
@@ -119,7 +118,7 @@ Try to add one node using command `gcloud beta container clusters resize`. You m
  
 Sometimes you need to migrate your workloads to the different node pool. The example use cases include changing the scope of node permissions. In this exercise you will create a new node pool, migrate the workload and then delete the default node pool.
 
-- create a new node pool. For simplicity, it should be identical to the default node poll you have created before when provisioning a cluster.
-- cordon the nodes of the default pool so no pods are scheduled to them
-- drain the nodes to trigger eviction of the running pods
-- delete the default node pool when all the pods are running
+- create a new node pool. For simplicity, it should be identical to the default node poll you have created before when provisioning a cluster (use `gcloud container node-pools` command)
+- cordon the nodes of the default pool so no pods are scheduled to them (use `kubectl cordon` command)
+- drain the nodes to trigger eviction of the running pods (use `kubectl drain` command)
+- delete the default node pool when all the pods are running (use `gcloud container node-pools` command)
