@@ -4,14 +4,43 @@ Services
 Module objectives
 -----------------
 
-Add a service to cover the backend, use the backend service from the frontend, add LoadBalancer service for the frontend. https://github.com/GoogleCloudPlatform/continuous-deployment-on-kubernetes/tree/master/sample-app/k8s/services 
+- create canary and production services
+- examine Load Balancer IP in the Cloud Console
 
+---
+
+Theory
+------
 
 A service is an abstraction for pods, providing a stable, virtual IP (VIP) address.
 
 While pods may come and go, services allow clients to reliably connect to the containers running in the pods, using the VIP. The virtual in VIP means it’s not an actual IP address connected to a network interface but its purpose is purely to forward traffic to one or more pods.
 
 Keeping the mapping between the VIP and the pods up-to-date is the job of kube-proxy, a process that runs on every node, which queries the API server to learn about new services in the cluster.
+
+Service Without Selectors Use cases:
+
+- Non-Kubernetes service
+- Local service, e.g., local database
+- Different cluster / namespace
+
+Service types
+
+- ClusterIP: Creates a VIP in a pod network, not accessible from outside
+- NodePort: Allocates a port from dynamic range (30000-32767) for every node
+- LoadBalancer: Creates an Cloud load balancer
+
+Proxy modes
+
+- userspace
+- iptables
+- ipvs
+
+Applications can discover services using enviornmental variables or DNS. DNS requires cluster addon like `kube-dns` or `coreDNS`.
+
+More information about services: https://kubernetes.io/docs/concepts/services-networking/service/
+
+---
 
 1. Create the canary and production services:
 
