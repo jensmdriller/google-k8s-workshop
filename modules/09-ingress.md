@@ -4,175 +4,113 @@ Ingress
 Module objectives
 -----------------
 
-Delete frontend load balancer and use ingress instead
+- serve app traffic from the ingress instead of LoadBalancer service
+- use static IP with Ingress
+- specify app domain
+- add SSL support
 
-## Ingress 
+---
 
-An API object that manages external access to the services in a cluster, typically HTTP.
+Ingress is an API object that manages external access to the services in a cluster, typically HTTP.
 
 Ingress can provide load balancing, SSL termination and name-based virtual hosting.
 
-### Exercise 1: Deploy sample app using ingress 
-
-1. Deploy nginx ingress controller
-    ```
-    kubectl create -f https://raw.githubusercontent.com/kubernetes/kops/master/addons/ingress-nginx/v1.6.0-gce.yaml
-    ```
-    This command deploys the controller in a separate namespace. The controller is just a set of different kubernetes objects: pods, services, etc. The controller is responsible for hosting nginx inside a pod and reconfiguring it whenever new ingress is deployed. Don't forget to open controller definition and see what is inside.
-
-1. Use the following commands to ensure that the controller is deployed corectly
-    ```
-    kubectl --namespace kube-ingress get services
-    kubectl --namespace kube-ingress get pods
-    ```
-    The output should be like this
-    ```
-    NAME                    TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
-    ingress-nginx           LoadBalancer   100.67.123.97    35.230.76.62  80:30406/TCP,443:30251/TCP   2m
-    nginx-default-backend   ClusterIP      100.64.220.104   <none>        80/TCP                       2m
-    
-    NAME                                     READY     STATUS    RESTARTS   AGE
-    ingress-nginx-785fb9fcc5-vdxq9           1/1       Running   3          2m
-    nginx-default-backend-6f675f4c45-rfl8n   1/1       Running   0          2m
-    ```
-    Note: It may take a a pod STATUS of `CrashLoopBackOff`. This is the backoff retry logic until the external load balancer is provisioned. Pay attention to the RESTARTS count.
-
-1. Create empty `ingress-sample-apps.yaml` file
-
-1. Add the app1 deployment to the file
+1. Change the frontend service type from `LoadBalancer` to `NodePort`
 
     ```
-    apiVersion: extensions/v1beta1
-    kind: Deployment
-    metadata:
-      name: app1
-    spec:
-      replicas: 2
-      selector:
-        matchLabels:
-          app: app1
-      template:
-        metadata:
-          labels:
-            app: app1
-        spec:
-          containers:
-          - name: app1
-            image: nginxdemos/hello:plain-text
-            ports:
-            - containerPort: 80
+    $ kubectl edit svc/gceme-frontend
     ```
 
-1. Add the app2 deployment to the file
-    ```
-    ---
-    apiVersion: extensions/v1beta1
-    kind: Deployment
-    metadata:
-      name: app2
-    spec:
-      replicas: 3
-      selector:
-        matchLabels:
-          app: app2 
-      template:
-        metadata:
-          labels:
-            app: app2 
-        spec:
-          containers:
-          - name: app2 
-            image: nginxdemos/hello:plain-text
-            ports:
-            - containerPort: 80
-    ```
+    Find the line `type: LoadBalancer` and change it to `type: NodePort`.
 
-1. Add the app1 service to the file
-    ```
-    ---
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: app1-svc
-    spec:
-      ports:
-      - port: 80
-        targetPort: 80
-        protocol: TCP
-        name: http
-      selector:
-        app: app1
-    ```
+    Save the file `Esc` - `:wq`
 
-1. Add the app2 service to the file
+    Intstead of a single load balancer per service GCP will create ingress load balancer and serve all the services from it. So you need to make the service internally exposed in the cluster.
+
+1. Check the service type
 
     ```
-    ---
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: app2-svc
-    spec:
-      ports:
-      - port: 80
-        targetPort: 80
-        protocol: TCP
-        name: http
-      selector:
-        app: app2
+    $ kubectl get services
+    NAME             TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+    db               ClusterIP   10.0.8.180    <none>        3306/TCP       59m
+    gceme-backend    ClusterIP   10.0.11.147   <none>        8080/TCP       59m
+    gceme-frontend   NodePort    10.0.12.200   <none>        80:31302/TCP   59m
+    kubernetes       ClusterIP   10.0.0.1      <none>        443/TCP        1h
     ```
 
-1. Add an ingress definition to the file
+1. Create file `k8s/training/ingress.yaml`
 
     ```
-    ---
     apiVersion: extensions/v1beta1
     kind: Ingress
     metadata:
-      name: sample-app-ingress
+      name: gceme-ingress
     spec:
       rules:
       - http:
           paths:
-          - path: /sample-app1
+          - path: /gceme/*
             backend:
-              serviceName: app1-svc
-              servicePort: 80
-          - path: /sample-app2
-            backend:
-              serviceName: app2-svc
+              serviceName: gceme-frontend
               servicePort: 80
     ```
 
-1. Deploy everything!
+    It will expose the service `gceme-frontend` using relative path `/gceme`.
+
+1. Create the ingress
+
     ```
-    kubectl apply -f ingress-sample-apps.yaml
+    # in the first terminal
+    $ kubectl get ingress --watch
+    NAME            HOSTS   ADDRESS   PORTS   AGE
+    gceme-ingress   *                 80      0s
+    gceme-ingress   *     35.227.223.114   80    6m22s
+
+    # in the second terminal
+    $ kubectl apply -f k8s/training/ingress.yaml
     ```
 
-1. Run the following command to get ingress IP address
-    ```
-    kubectl get ing sample-app-ingress
+    Wait until you see IP in the adress field. The application will be available as http://35.227.223.114/gceme/
     ```
 
-1. Open the following 2 URLs `<ingress-ip>/sample-app1` and `<ingress-ip>/sample-app2`. Make sure that they lead to app1 and app2 respectively.
 
-### Exercise 2 (Optional): Specify app host
+Use static IP
+-------------
 
-1. Now, app1 and app2 should be accessed using different dns names.
-1. Modify your `/etc/hosts` and set `app1.com` and `app2.com` domains to be resolved to the ingress IP address.
+By default ingress uses ephemeral IP which may change during the time. To create DNS record and issue SSL certificates one needs static IP. In this exercise you will create one and use it with ingress.
+
+1. Create static IP
+
+    ```
+    $ gcloud compute addresses create web-static-ip --global
+    ```
+
+1. Assign it to the ingress
+
+    ```
+    $ kubectl edit ingress/gceme-ingress
+    ..
+    metadata:
+      name: gceme-ingress
+      annotations:
+        kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
+    ```
+
+    When you save the file Kubernetes will change the IP of the load balancer according to the annotation. You may get new IP from the Cloud Console or ingress resource.
+
+Exercise 2 (Optional): Specify app domain
+-----------------------------------------
+
+1. Now, gceme app should be accessed using specific dns name.
+1. Modify your `/etc/hosts` and set `gceme-training.com` domain to be resolved to the ingress IP address.
 1. Modify ingress definition appropriately. Find section `Name based virtual hosting` in [this](https://kubernetes.io/docs/concepts/services-networking/ingress/#types-of-ingress) document for reference.
-1. Access `app1.com` and `app2.com` from your web browser.
+1. Access `gceme-training.com` from your web browser.
+1. Verify that you can't access `gceme` app using IP address anymore
 
-### Exercise 3 (Optional): Use TLS
+Exercise 3 (Optional): Use TLS
+------------------------------
 
-1. Create two self-signed certificates for `app1`  and `app2` [link](https://stackoverflow.com/questions/10175812/how-to-create-a-self-signed-certificate-with-openssl?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa)
-1. Create two secrets for `app1`  and `app2`. Each secret should contain the corresponding certificate and private key.
+1. Create a self-signed certificate for `gceme` app [link](https://stackoverflow.com/questions/10175812/how-to-create-a-self-signed-certificate-with-openssl) for the `gceme-training.com` domain
+1. Create a secret for `gceme` app. The secret should contain the certificate and private key.
 1. Add a `tls` section to the ingress definition. You can use the `tls` section from [this](https://kubernetes.io/docs/concepts/services-networking/ingress/#types-of-ingress) document for reference.
-1. Redeploy, open each app in a web browser and examine certificate details. Make sure that each app now uses its own certificates. Use [this](https://www.ssl2buy.com/wiki/how-to-view-ssl-certificate-details-on-chrome-56) link to see how a certificate can be viewed in chrome.
-
-### Cleanup
-
-1. Delete everything (two apps, two services and one ingress)
-    ```
-    kubectl delete -f ingress-sample-apps.yaml
-    ```
+1. Redeploy, open app in a web browser and examine certificate details. Use [this](https://www.ssl2buy.com/wiki/how-to-view-ssl-certificate-details-on-chrome-56) link to see how a certificate can be viewed in chrome.
