@@ -13,6 +13,19 @@ Module objectives
 
 In this module you will use Google Kubernetes Engine (GKE) managed service to deploy a Kubernetes cluster.
 
+---
+
+Theory
+------
+
+Google Kubernetes Engine (GKE) does containerized application management at scale. One may deploy a wide variety of applications to Kubernetes cluster and operate this cluster seamlessly with high availability.
+
+One may scale both cluster and applications to meet increased demand and move applications freely between on-premise and cloud.
+
+Kubernetes cluster consists of two types of nodes. Master nodes coordinate container placement and store cluster state. Worker nodes actually run the application containers.
+
+---
+
 1. Create a cluster running two `n1-standard-2` worker nodes
 
     ```shell
