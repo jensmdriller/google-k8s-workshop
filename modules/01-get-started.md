@@ -14,6 +14,73 @@ Before getting started, you first have to prepare the environment for the worksh
 1. Set computing zone and project
 1. Download the lab source code from GitHub
 
+---
+
+Google Cloud Platform Overview
+------------------------------
+
+- managed by Google
+- provides basic resources like compute, storage and network
+- also provides services like Cloud SQL and Kubernetes engine
+- all operations can be done through the API
+- SLAs define reliability guarantees for the APIs
+- three ways of access
+  - API calls
+  - SGK commands
+  - Cloud Console web UI
+
+Google Cloud Computing service groups:
+
+- Compute
+- Storage
+- Migration
+- Networking
+- Databases
+- Developer Tools
+- Management Tools
+
+You will use these services while doing the lab:
+
+- Kubernetes Engine: create Kubernetes cluster
+- IAM & Admin: manage users and permissions
+- Compute Engine: run virtual machines for worker nodes
+- VPC Network: connectivity between the nodes
+- Load Balancing: create Ingress of LoadBalancer type
+- Persistent Disk: persistent volume for Jenkins
+- Source Repositories: hosting source code for an app
+- Cloud Build: build Docker containers
+- Container Registry: storing versioned Docker images of an app
+
+Cloud Console is admin UI for Google Cloud. With cloud console you can find and manage your resources through secure administrative interface.
+
+Cloud console features:
+
+- Resource Management
+- Billing
+- SSH in Browser
+- Activity Stream
+- Cloud Shell
+
+Cloud SDK provides essential tools for cloud platform.
+
+- Manage Virtual Machine instances, networks, firewalls, and disk storage
+- Spin up a Kubernetes Cluster with a single command
+
+Project
+
+- Managing APIs
+- Enabling billing
+- Adding and removing collaborators
+- Managing permissions for GCP resources
+
+Zonal, Regional, and Global Resources
+
+- Zone: instances and persistent disks
+- Region: subnets and addresses
+- Global: VPC Network and firewall
+
+---
+
 Google Cloud Platform (GCP) account
 -----------------------------------
 
