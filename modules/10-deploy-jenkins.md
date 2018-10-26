@@ -8,7 +8,7 @@ In this module you will deploy Jenkins on GKE to create and execute CI/CD pipeli
 Configure Jenkins
 -----------------
    
-Look at possible configuration options: {link}
+Look at possible configuration options: https://github.com/helm/charts/blob/master/stable/jenkins/README.md#configuration
 
 1. Start with empty `jenkins/values.yaml`
 
@@ -47,9 +47,7 @@ Look at possible configuration options: {link}
         ApiVersion: networking.k8s.io/v1
     ```
 
-    TODO: figure out what is the default value and how Jenkins chart uses this parameter
-
-1. TODO: check the option
+1. Install Default RBAC roles and bindings
 
     ```
     rbac:
@@ -57,7 +55,7 @@ Look at possible configuration options: {link}
         serviceAccountName: cd-jenkins
     ```
 
-1. TODO: check option
+1. Enable Kubernetes plugin jnlp-agent podTemplate
 
     ```
     Agent:
@@ -67,8 +65,12 @@ Look at possible configuration options: {link}
 
     ```
     Master:
-        Cpu: "1"
-        Memory: "3500Mi"
+        requests:
+            cpu: "1"
+            memory: "3500Mi"
+        limits:
+            cpu: "1"
+            memory: "3500Mi"
     ```
 
 1. Tell Jenkins to use all the memory available because it is a single process in container
@@ -90,53 +92,57 @@ Look at possible configuration options: {link}
 1. Plugins extend Jenkins functionality. We will use several
 
     - __kubernetes__: launch builds in k8s containers
-    - __workflow-aggregator__: TODO: learn
-    - __workflow-job__: TODO: learn
-    - __credentials-binding__: TODO: learn
+    - __workflow-aggregator__: A suite of plugins that lets you orchestrate automation, simple or complex
+    - __workflow-job__: Defines a new job type for pipelines and provides their generic user interface
+    - __credentials-binding__: Allows credentials to be bound to environment variables for use from miscellaneous build steps
     - __git__: check out application code from the repo
     - __google-oauth-plugin__: use credentials from the virtual machine metadata to access GCP services
-    - __google-source-plugin__: TODO: learn
+    - __google-source-plugin__: credential provider to use GCP OAuth Credentials to access source code from Google Source Repositories
 
     ```
     Master:
         InstallPlugins:
-            - kubernetes:1.7.1
+            - kubernetes:1.12.2
             - workflow-aggregator:2.5
-            - workflow-job:2.21
+            - workflow-job:2.24
             - credentials-binding:1.16
             - git:3.9.1
             - google-oauth-plugin:0.6
             - google-source-plugin:0.3
     ```
 
-    You can find Jenkins plugins at URL: {link}
+    You can find Jenkins plugins at URL: https://plugins.jenkins.io/
 
 1. Now the `jenkins/values.yaml` file should look like
 
     ```
     Master:
-        InstallPlugins:
-            - kubernetes:1.7.1
-            - workflow-aggregator:2.5
-            - workflow-job:2.21
-            - credentials-binding:1.16
-            - git:3.9.1
-            - google-oauth-plugin:0.6
-            - google-source-plugin:0.3
-        Cpu: "1"
-        Memory: "3500Mi"
-        JavaOpts: "-Xms3500m -Xmx3500m"
-        ServiceType: LoadBalancer
+    InstallPlugins:
+        - kubernetes:1.12.2
+        - workflow-aggregator:2.5
+        - workflow-job:2.24
+        - credentials-binding:1.16
+        - git:3.9.1
+        - google-oauth-plugin:0.6
+        - google-source-plugin:0.3
+    requests:
+        cpu: "1"
+        memory: "3500Mi"
+    limits:
+        cpu: "1"
+        memory: "3500Mi"
+    JavaOpts: "-Xms3500m -Xmx3500m"
+    ServiceType: LoadBalancer
     Agent:
-        Enabled: false
+    Enabled: false
     Persistence:
-        Size: 100Gi
+    Size: 100Gi
     NetworkPolicy:
-        Enabled: false
-        ApiVersion: networking.k8s.io/v1
+    Enabled: false
+    ApiVersion: networking.k8s.io/v1
     rbac:
-        install: true
-        serviceAccountName: cd-jenkins
+    install: true
+    serviceAccountName: cd-jenkins
     ```
 
 Deploy Jenkins

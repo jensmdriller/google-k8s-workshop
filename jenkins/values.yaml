@@ -7,8 +7,12 @@ Master:
     - git:3.9.1
     - google-oauth-plugin:0.6
     - google-source-plugin:0.3
-  Cpu: "1"
-  Memory: "3500Mi"
+  requests:
+      cpu: "1"
+      memory: "3500Mi"
+  limits:
+      cpu: "1"
+      memory: "3500Mi"
   JavaOpts: "-Xms3500m -Xmx3500m"
   ServiceType: LoadBalancer
 Agent:
