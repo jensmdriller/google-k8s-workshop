@@ -84,15 +84,15 @@ Zonal, Regional, and Global Resources
 Google Cloud Platform (GCP) account
 -----------------------------------
 
-In this workshop, you will run Kubernetes in GCP. We have created a separate project for each student. You should recive an email with the credentials to log in.
+In this workshop, you will run Kubernetes in GCP. We have created a separate project for each student. You should receive an email with the credentials to log in.
 
 We recommend using Chrome browser during the workshop.
 
 1. Go to https://console.cloud.google.com/
-1. Enter the user name
+1. Enter the username
 1. Enter the user password
 
-Sometimes GCP asks for a verification code when it detects log ins from unusual locations. It is security measure to keep the account protected. If this happens, please ask the instructor for the verification code.
+Sometimes GCP asks for a verification code when it detects logins from unusual locations. It is security measure to keep the account protected. If this happens, please ask the instructor for the verification code.
 
 1. In the top left corner select the project "Cloud Project XX", where XX is your account number
 
@@ -128,7 +128,7 @@ $ gcloud services enable --async \
   stackdriver.googleapis.com
 ```
 
-The operation runs asyncronously. You can check if the APIs are enabled for the project
+The operation runs asynchronously. You can check if the APIs are enabled for the project
 
 ```
 $ gcloud services list --enabled
@@ -186,3 +186,4 @@ Clone the lab repository in your cloud shell, then `cd` into that dir:
 
   $ cd google-k8s-workshop
   ```
+

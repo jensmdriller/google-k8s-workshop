@@ -9,62 +9,36 @@ Module objectives
 
 ---
 
-Theory
-------
+The sample app
+--------------
 
-Containers are units of software delivery (run everywhere, run anything)
+You'll use a very simple sample application—`gceme`—as the basis for your CD pipeline. `gceme` is written in Go and is located in the `sample-app` directory in this repo. When you run the `gceme` binary on a GCE instance, it displays the instance's metadata in a card:
 
-- impose resource limits (CPU, memory, disk, etc.) on the process
-- provide isolation via namespaces (users, processes, network, mounts, etc.)
-- Copy-on-write storage
-- Share kernel with host
-- No device emulation
+![](docs/img/info_card.png)
 
-Pods are the smallest deployable unit in Kubernetes.
+The binary supports two modes of operation, designed to mimic a microservice. In backend mode, `gceme` will listen on a port (8080 by default) and return GCE instance metadata as JSON, with content-type=application/json. In frontend mode, `gceme` will query a backend `gceme` service and render that JSON in the UI you saw above. It looks roughly like this:
 
-- may have one or several containers inside
-- All containers run on the same node
-- Network and storage are shared
-- Usually managed by controller
+```
+-----------      ------------      ~~~~~~~~~~~~        -----------
+|         |      |          |      |          |        |         |
+|  user   | ---> |   gceme  | ---> | lb/proxy | -----> |  gceme  | ----+
+|(browser)|      |(frontend)|      |(optional)|   |    |(backend)|     |    +------+
+|         |      |          |      |          |   |    |         |     |    |      |
+-----------      ------------      ~~~~~~~~~~~~   |    -----------     +--->|  DB  |
+                                                  |    -----------     |    |      |
+                                                  |    |         |     |    +------+
+                                                  |--> |  gceme  |-----+
+                                                       |(backend)|
+                                                       |         |
+                                                       -----------
+```
 
-Kubernetes supports pluggable container runtime
+Both the frontend and backend modes of the application support two additional URLs:
 
-- Docker
-- Rkt
-- CRI-O runC
-- containerd
+1. `/version` prints the version of the binary (declared as a const in `main.go`)
+1. `/healthz` reports the health of the application. In frontend mode, health will be OK if the backend is reachable.
 
-Multi-Container Pod Use Cases
-
-- Gather logs
-- Monitor metrics
-- Proxy network connections 
-- Adapters
-
-Pod phases during lifetime
-
-- Pending
-- Running
-- Succeded
-- Failed
-- Unknown
-
-Pod Condition Types
-
-- PodScheduled
-- Ready
-- Initialized
-- Unschedulable
-
-Pod Statuses
-
-- True
-- False
-- Unknown
-
-More information about pods is in [Pod lifecycle reference](https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/)
-
----
+A deployment is a supervisor for pods and replica sets, giving you fine-grained control over how and when a new pod version is rolled out as well as rolled back to a previous state.
 
 Build application Docker image
 ------------------------------
@@ -79,7 +53,7 @@ Build application Docker image
     
     `google-k8s-workshop` repository should be cloned in the previous exercise.
 
-1. Build the Docker image
+1. Set the `IMAGE` variable and build the Docker image
 
     ```
     export IMAGE=gcr.io/$PROJECT_ID/sample-k8s-app:1.0.0
@@ -88,11 +62,11 @@ Build application Docker image
 
     `gcr.io` is the repository hostname.
 
-    `$PROJECT_ID` is id of your GCP project
+    `$PROJECT_ID` is the id of your GCP project
 
     `sample-k8s-app` is the name of the application image
 
-    `1.0.0` is image tag
+    `1.0.0` is the image tag
 
     `docker build` command packages the application into a docker container. It does the following steps.
     * Reads the [Dockerfile](https://github.com/Altoros/google-k8s-workshop/blob/master/sample-app/Dockerfile#L15)
@@ -100,14 +74,16 @@ Build application Docker image
     * Runs all commands from the Dockerfile
     * Saves the container filesystem as a new Docker image  
 
+1. Push the image to the GCE container registry
+    ```
+    $ docker push $IMAGE
+    ``` 
+    No authentication is required because you are already authenticated by the Cloud Shell
+
+1. In GCP console open 'Container Registry' -> 'Images' and make sure that `sample-k8s-app` image is present
+
 Run application in the Cloud Shell
 ----------------------
-
-1. Set the `IMAGE` variable
-
-    ```
-    export IMAGE=gcr.io/$PROJECT_ID/sample-k8s-app:1.0.0
-    ```
 
 1. Run database container
 
@@ -128,7 +104,7 @@ Run application in the Cloud Shell
 
     `--rm` tells Docker to delete the container as soon as it is stopped or the root process inside container finishes execution
 
-1. Run backend container
+1. Run the backend container
 
     ```
     $ docker run --rm \
@@ -145,9 +121,9 @@ Run application in the Cloud Shell
 
     `$IMAGE` use image we build earlier for the sample app
 
-    `app -port=8081 -db-host=db -db-password=root` application start command. `app` is the executable file that we build and package inside the container previously. In parameters we specify that the app should listen at port `8081` and how it can connect to the database.
+    `app -port=8081 -db-host=db -db-password=root` application start command. `app` is the executable file that we build and package inside the container previously. In parameters, we specify that the app should listen at port `8081` and how it can connect to the database.
 
-1. Run frontend container
+1. Run the frontend container
 
     ```
     $ docker run --rm \
@@ -181,7 +157,7 @@ Run application in the Cloud Shell
 
     ```
     $ docker stop $(docker ps -aq)
-    $ docker rm $(docker ps -aq)
+    $ ocker rm $(docker ps -aq)
     ```
 
 Optional Exercises
@@ -189,5 +165,6 @@ Optional Exercises
 
 ### Use external volume for mysql container 
 
-By default, mysql container stores its data inside the container file system. However, there is a posibility to store this data in a particular folder on the host and mount this folder to the container as a volume. Follow the instructions from the `Where to Store Data` section from the [mysql image documentation](https://hub.docker.com/_/mysql/) in order to do that.
+By default, mysql container stores its data inside the container file system. However, there is a possibility to store this data in a particular folder on the host and mount this folder to the container as a volume. Follow the instructions from the `Where to Store Data` section from the [mysql image documentation](https://hub.docker.com/_/mysql/) in order to do th at.
+
 

@@ -11,7 +11,7 @@ Module objectives
 
 ---
 
-In this module you will use Google Kubernetes Engine (GKE) managed service to deploy a Kubernetes cluster.
+In this module, you will use Google Kubernetes Engine (GKE) managed service to deploy a Kubernetes cluster.
 
 ---
 
@@ -56,67 +56,15 @@ Kubernetes cluster consists of two types of nodes. Master nodes coordinate conta
     ```shell
     $ kubectl get nodes
     ```
+    This command should display all cluster nodes. In GCP console open 'Compute Engine' -> 'VM instances' to verify that each node has a corresponding VM.
 
-Cluster is up.
-
-Install Helm
-------------
-
-Helm is a package manager for Kubernetes. You will use it to install Jenkins.
-
-Helm packages called Charts contain application itself, metadata and deployment automation scripts. There is a [repository](https://github.com/helm/charts) with Charts for the most common products including Jenkins. 
-
-Helm has two parts: `helm` CLI and Tiller Kubernetes service.
-
-Install Helm into `$HOME` directory as Cloud Shell erases everything else on disk between restarts.
-
-1. Download the Helm binary
-
-    ```shell
-    wget https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz
-    ```
-
-1. Extract Helm client
-
-    ```shell
-    tar zxfv helm-v2.11.0-linux-amd64.tar.gz
-    cp linux-amd64/helm .
-    ```
-
-1. Grant `cluster-admin` role to your account
-    
-    ```shell
-    kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value account)
-    ```
-
-1. Create `tiller` service account with the `cluster-admin` role
-
-    ```shell
-    kubectl create serviceaccount tiller --namespace kube-system
-    kubectl create clusterrolebinding tiller-admin-binding --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-    ```
-
-1. Deploy Tiller
-
-    ```shell
-    ./helm init --service-account=tiller
-    ./helm update
-    ```
-
-1. Verify that both parts of Helm are up and running
-
-    ```shell
-    ./helm version
-    Client: &version.Version{SemVer:"v2.11.0", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
-    Server: &version.Version{SemVer:"v2.11.0", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
-    ```
     
 Module summary
 --------------
 
 You created a GKE Kubernetes cluster, configured `kubectl` CLI and deployed Helm.
 
-In the next module you will deploy Jenkins.
+In the next module, you will deploy Jenkins.
 
 Optional Exercises
 -------------------
@@ -135,3 +83,4 @@ Sometimes you need to migrate your workloads to the different node pool. The exa
 - cordon the nodes of the default pool so no pods are scheduled to them (use `kubectl cordon` command)
 - drain the nodes to trigger eviction of the running pods (use `kubectl drain` command)
 - delete the default node pool when all the pods are running (use `gcloud container node-pools` command)
+
