@@ -7,6 +7,29 @@ Module objectives
 - Learn sample application architecture
 - Deploy sample application to Kubernetes
 
+---
+
+Theory
+------
+
+- Declarative updates for Pods and ReplicaSets
+- Changes actual state to desired state
+- ReplicaSet rollout
+- Rollback Deployment revision
+- Scale the Deployment to facilitate additional load
+
+More information: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+Updating Deployments
+
+Deployments with a matching selector value will rollover existing deployments in progress
+
+By default no more then 25% of pods will be unavailable druning the deployment under desired amount. 25% Pods surge over the desired amount. Certainly deployment should have enough pods to satisfy these criteria.
+
+Deployment keeps a revision history and can roll back to any previous version at any time.
+
+---
+
 The sample app
 --------------
 
