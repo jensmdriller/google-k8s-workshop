@@ -43,7 +43,7 @@ In this lab you will add persistent storage volume to the MySQL pod.
 
     For GCE default storage class should have `kubernetes.io/gce-pd` provisioner. This provisioner creates GCE persistent disks for any requested persistent volume.
 
-1. Add Persistent Volume Claim definition to `k8s/training/data-volume.yaml`
+1. Add Persistent Volume Claim definition to `sample-app/k8s/training/data-volume.yaml`
 
     ```
     kind: PersistentVolumeClaim
@@ -127,6 +127,14 @@ In this lab you will add persistent storage volume to the MySQL pod.
     ```
     $ kubectl get pods
     ```
+
+1. Verify that the application is accessible and notes can be stored in the database.
+
+1. Try to delete mysql pod (not deployment!)
+
+1. Wait for kubernetes to recreate the pod.
+
+1. Verify that old notes are still there and database content isn't lost
 
 Now you have MySQL database running inside Kubernetes cluster on GCP that stores data persistently on the volume.
 
