@@ -189,7 +189,7 @@ We will use a separate namespace for this exercise.
     kubectl apply -f quota-mem-cpu.yaml
     ```
 
-2. Every container must have a memory request, memory limit, cpu request, and cpu limit. Try to create a pod without these specs and see the error.
+2. Now every container in the quote namespace must have a memory request, memory limit, cpu request, and cpu limit. Try to create a pod without these specs and see the error.
 
     ```file=quota-pod.yaml
     apiVersion: v1
@@ -259,7 +259,7 @@ We will use a separate namespace for this exercise.
     kind: Pod
     metadata:
       namespace: quota
-      name: quota-mem-cpu-demo
+      name: quota-mem-cpu-demo-2
     spec:
       containers:
       - name: quota-mem-cpu-demo-ctr
@@ -281,52 +281,9 @@ We will use a separate namespace for this exercise.
 
 ## Exercise 03 (optional): set the default request and limit for a namespace
 
-1. Create LimitRange object
-
-    ```file=limit-range.yaml
-    apiVersion: v1
-    kind: LimitRange
-    metadata:
-      namespace: quota
-      name: limit-range
-    spec:
-      limits:
-      - default:
-          cpu: 1
-          memory: "800Mi"
-        defaultRequest:
-          cpu: 0.5
-          memory: "600Mi"
-        type: Container
-    ```
-
-    ```
-    kubectl apply -f limit-range.yaml
-    ```
-
+1. Create [LimitRange](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/) object
 1. Create a pod without specifying limits and requests
-
-    ```file=pod.yaml
-    apiVersion: v1
-    kind: Pod
-    metadata:
-      namespace: quota
-      name: default-demo
-    spec:
-      containers:
-      - name: default-demo-ctr
-        image: nginx
-    ```
-
-    ```
-    kubectl apply -f pod.yaml
-    ```
-
-1. Check the limits for created pod
-
-    ```
-    kubectl get pod default-demo --output=yaml --namespace=quota
-    ```
+1. Use 'kubectl describe' command to check the limits for created pod
 
 Clean up
 --------
