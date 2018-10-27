@@ -100,6 +100,7 @@ We will use a separate namespace for this exercise.
     apiVersion: v1
     kind: ResourceQuota
     metadata:
+      namespace: quota
       name: pod-demo
     spec:
       hard:
@@ -109,7 +110,7 @@ We will use a separate namespace for this exercise.
 3. Create the resource quota
 
     ```
-    kubectl apply -f quota-pod.yaml`
+    kubectl apply -f quota-pod.yaml
     ```
 
 4. Get information about created quota
@@ -124,6 +125,7 @@ We will use a separate namespace for this exercise.
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      namespace: quota
       name: pod-quota-demo
     spec:
       selector:
@@ -162,7 +164,7 @@ We will use a separate namespace for this exercise.
 7. Delete the deployment
 
     ```
-    kubectl delete deployment pod-quota-demo
+    kubectl delete deployment pod-quota-demo --namespace=quota
     ```
 
 ## Exercise 02: limit the CPU & memory available for a namespace
@@ -173,6 +175,7 @@ We will use a separate namespace for this exercise.
     apiVersion: v1
     kind: ResourceQuota
     metadata:
+      namespace: quota
       name: mem-cpu-demo
     spec:
       hard:
@@ -183,7 +186,7 @@ We will use a separate namespace for this exercise.
     ```
 
     ```
-    kubectl apply quota-mem-cpu.yaml
+    kubectl apply -f quota-mem-cpu.yaml
     ```
 
 2. Every container must have a memory request, memory limit, cpu request, and cpu limit. Try to create a pod without these specs and see the error.
@@ -192,6 +195,7 @@ We will use a separate namespace for this exercise.
     apiVersion: v1
     kind: Pod
     metadata:
+      namespace: quota
       name: quota-mem-cpu-demo
     spec:
       containers:
@@ -209,6 +213,7 @@ We will use a separate namespace for this exercise.
     apiVersion: v1
     kind: Pod
     metadata:
+      namespace: quota
       name: quota-mem-cpu-demo
     spec:
       containers:
@@ -253,6 +258,7 @@ We will use a separate namespace for this exercise.
     apiVersion: v1
     kind: Pod
     metadata:
+      namespace: quota
       name: quota-mem-cpu-demo
     spec:
       containers:
@@ -281,6 +287,7 @@ We will use a separate namespace for this exercise.
     apiVersion: v1
     kind: LimitRange
     metadata:
+      namespace: quota
       name: limit-range
     spec:
       limits:
@@ -303,6 +310,7 @@ We will use a separate namespace for this exercise.
     apiVersion: v1
     kind: Pod
     metadata:
+      namespace: quota
       name: default-demo
     spec:
       containers:
@@ -317,7 +325,7 @@ We will use a separate namespace for this exercise.
 1. Check the limits for created pod
 
     ```
-    kubectl get pod default-demo --output=yaml --namespace=quota-01
+    kubectl get pod default-demo --output=yaml --namespace=quota
     ```
 
 Clean up
