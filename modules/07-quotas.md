@@ -328,10 +328,3 @@ Clean up
     ```
     $ kubectl delete ns quota
     ```
-
-Exercises
----------
-
-1. Optional: describe the limitations we will set for the development namespace
-
-    Look at quota in `k8s/dev/default.yaml`
