@@ -34,6 +34,24 @@ You can use the [labels](http://kubernetes.io/docs/user-guide/labels/) `env: pro
    //snip
    ```
 
+1. Add canary deployment stage
+
+  ```
+  stage('Deploy Canary') {
+      // Production branch
+      when { branch 'canary' }
+      steps{
+        container('kubectl') {
+        // Change deployed image in canary to the one we just built
+          sh("sed -i.bak 's#REPLACE_WITH_IMAGE#${imageTag}#' ./k8s/production/*.yaml")
+          sh("kubectl --namespace=production apply -f k8s/services/")
+          sh("kubectl --namespace=production apply -f k8s/canary/")
+          sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
+        }
+      }
+  }
+  ```
+
 1. `git add templates/base.html main.go`, then `git commit -m "Version 2"`, and finally `git push origin canary` your change.
 
 1. When your change has been pushed to the Git repository, navigate to your Jenkins job. Click the "Scan Multibranch Pipeline Now" button.
