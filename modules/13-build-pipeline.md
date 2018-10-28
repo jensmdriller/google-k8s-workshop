@@ -1,9 +1,9 @@
-Make Build Pipeline
+Build Pipeline
 -------------------
 
 Create a pipeline that builds application images using Google Container Builder service. 
 
-1. Start with an empty `Jenkinsfile`
+1. Create an empty `Jenkinsfile` in the `sample-app` folder
 
 1. Define variables
 
@@ -92,7 +92,7 @@ Create a job
 
 This lab uses [Jenkins Pipeline](https://jenkins.io/solutions/pipeline/) to define builds as groovy scripts.
 
-Navigate to your Jenkins UI and follow these steps to configure a Pipeline job (hot tip: you can find the IP address of your Jenkins install with `kubectl get ingress --namespace jenkins`):
+Navigate to your Jenkins UI and follow these steps to configure a Pipeline job (hot tip: you can find the IP address of your Jenkins install with `kubectl get svc cd-jenkins --namespace jenkins`):
 
 1. Click the “Jenkins” link in the top left of the interface
 
