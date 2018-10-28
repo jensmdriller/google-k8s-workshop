@@ -1,21 +1,21 @@
 Deploy a breaking change, then roll back
 ----------------------------------------
 
-Make a breaking change to the `gceme` source, push it, and deploy it through the pipeline to production. Then pretend latency spiked after the deployment and you want to roll back. Do it! Faster!
+Make a breaking change to the `gceme` source, push it, and deploy it through the pipeline to production. Then pretend latency spiked after the deployment and you want to roll back. Make sure that after your change the app is able to compile, otherwise it will fail before the deploy stage. As an example, you can change the version of the app. 
 
 ```
-$ kubectl rollout undo deployment/gceme-backend-production -n prod
+$ kubectl rollout undo deployment/gceme-backend-production -n production
 deployment "gceme-backend-production"
 
-$ kubectl rollout undo deployment/gceme-frontend-production -n prod
+$ kubectl rollout undo deployment/gceme-frontend-production -n production
 deployment "gceme-frontend-production"
 
 $ kubectl rollout undo deployment/mysql -n prod
 
-$ kubectl rollout status deployment/gceme-frontend-production -n prod
+$ kubectl rollout status deployment/gceme-frontend-production -n production
 deployment "gceme-frontend-production" successfully rolled out
 
-$ kubectl rollout history deployment/gceme-frontend-production -n prod
+$ kubectl rollout history deployment/gceme-frontend-production -n production
 ```
 
 Optional exercises
