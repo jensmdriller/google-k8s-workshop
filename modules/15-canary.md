@@ -2,9 +2,9 @@ Canary deployment
 -----------------
 
 Create a branch for the canary environment called `canary`
-   
-   ```shell
-    $ git checkout -b canary
+
+   ```
+   $ git checkout -b canary
    ```
 
 The [`Jenkinsfile`](https://jenkins.io/doc/book/pipeline/jenkinsfile/) is written using the Jenkins Workflow DSL (Groovy-based). It allows an entire build pipeline to be expressed in a single script that lives alongside your source code and supports powerful features like parallelization, stages, and user input.
@@ -64,7 +64,7 @@ You can use the [labels](http://kubernetes.io/docs/user-guide/labels/) `env: pro
 
 1. Track the output for a few minutes and watch for the `kubectl --namespace=production apply...` to begin. When it starts, start new terminal that's polling canary's `/version` URL and observe it start to change in some of the requests:
 
-   ```
+   ```shell
    $ export FRONTEND_SERVICE_IP=$(kubectl get -o jsonpath="{.status.loadBalancer.ingress[0].ip}"  --namespace=production services gceme-frontend)
    $ while true; do curl http://$FRONTEND_SERVICE_IP/version; sleep 1;  done
    1.0.0
@@ -83,10 +83,10 @@ You can use the [labels](http://kubernetes.io/docs/user-guide/labels/) `env: pro
 
 1. Once the change is deployed to canary, you can continue to roll it out to the rest of your users by creating a branch called `production` and pushing it to the Git server:
 
-   ```shell
-    $ git checkout master
-    $ git merge canary
-    $ git push origin master
+   ```
+   git checkout master
+   git merge canary
+   git push origin master
    ```
 1. In a minute or so you should see that the master job in the sample-app folder has kicked off:
 

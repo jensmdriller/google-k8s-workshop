@@ -8,9 +8,9 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
 
 1. First change directories to the sample-app:
 
-  ```shell
-  $ cd sample-app
-  ```
+    ```
+    $ cd sample-app
+    ```
 
 1. Create secret with the MySQL administrator password
 
@@ -19,9 +19,9 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
     secret/mysql created
     ```
 
-1. Create the manifest to deploy MySQL database
+1. Create the manifest to deploy MySQL database as k8s/training/db.yml:
 
-    ```
+    ```yaml
     apiVersion: extensions/v1beta1 kind: Deployment
     metadata:
       name: mysql
@@ -52,8 +52,6 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
               name: mysql
     ```
 
-    Save it as `k8s/training/db.yml`.
-
 1. Deploy MySQL to Kubernetes
 
     ```
@@ -79,11 +77,10 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
     $ kubectl describe pod mysql-6bbbfb86d-vdq7m | grep IP
     ```
     It is also useful to take a look at the full output of the `kubectl describe pod` command.
-    
 
 1. Create the manifest for the backend application, save it as `k8s/training/backend.yml` and deploy it to kubernetes using `kubectl apply` command.
 
-    ```
+    ```yaml
     kind: Deployment
     apiVersion: extensions/v1beta1
     metadata:
@@ -100,7 +97,7 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
         spec:
           containers:
           - name: backend
-            image: <REPLACE_WITH_YOUR_OWN_IMAGE> 
+            image: <REPLACE_WITH_YOUR_OWN_IMAGE>
             env:
               - name: MYSQL_ROOT_PASSWORD
                 valueFrom:
@@ -122,14 +119,13 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
               containerPort: 8080
 
     ```
-
     Don't forget to replace the image and the mysql ip address.
 
 1. Find out the backend pod IP address in a similar way how we did it for mysql pod.
 
 1. Create the manifest for the frontend application, save it as `k8s/training/frontend.yml` and deploy it to kubernetes using `kubectl apply` command.
 
-    ```
+    ```yaml
     kind: Deployment
     apiVersion: extensions/v1beta1
     metadata:
@@ -146,7 +142,7 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
         spec:
           containers:
           - name: frontend
-            image: <REPLACE_WITH_YOUR_OWN_IMAGE> 
+            image: <REPLACE_WITH_YOUR_OWN_IMAGE>
             resources:
               limits:
                 memory: "500Mi"
@@ -175,7 +171,6 @@ Optional Exercises
 
 1. Use `kubectl exec` command to get inside one of the pods and kill the main process. Observe how kubernetes restarts the pod.
 
-1. Create nginx deployment 
+1. Create nginx deployment
 
    Use one of the previously deployed manifests as an example and create a deployment that runs [nginx](https://hub.docker.com/_/nginx/) docker image. Ssh on a nod and make sure that nginx is running.
-

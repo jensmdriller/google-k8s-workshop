@@ -91,12 +91,12 @@ We will use a separate namespace for this exercise.
 1. Create test namespace for this excercise
 
     ```
-    kubectl create namespace quota
+    $ kubectl create namespace quota
     ```
 
-2. Create template quota-pod.yaml
+1. Create template quota-pod.yaml
 
-    ```
+    ```yaml
     apiVersion: v1
     kind: ResourceQuota
     metadata:
@@ -107,21 +107,21 @@ We will use a separate namespace for this exercise.
         pods: "2"
     ```
 
-3. Create the resource quota
+1. Create the resource quota
 
     ```
-    kubectl apply -f quota-pod.yaml
+    $ kubectl apply -f quota-pod.yaml
     ```
 
-4. Get information about created quota
+1. Get information about created quota
 
     ```
-    kubectl get resourcequota pod-demo --namespace=quota --output=yaml
+    $ kubectl get resourcequota pod-demo --namespace=quota --output=yaml
     ```
 
-5. Create a deployment with three replicas
+1. Create a deployment with three replicas
 
-    ```
+    ```yaml
     apiVersion: apps/v1
     kind: Deployment
     metadata:
@@ -143,35 +143,36 @@ We will use a separate namespace for this exercise.
     ```
 
     ```
-    kubectl apply -f quota-deployment.yaml
+    $ kubectl apply -f quota-deployment.yaml
     ```
 
-6. Now check the status of the Deployment
+1. Now check the status of the Deployment
 
     ```
-    kubectl get deployment pod-quota-demo --namespace=quota --output=yaml
+    $ kubectl get deployment pod-quota-demo --namespace=quota --output=yaml
     ```
 
     You will see that there were only 2 replicas out of 3 created
 
-    ```
+    ```yaml
     spec:
       replicas: 3
     status:
       availableReplicas: 2
     ```
 
-7. Delete the deployment
+1. Delete the deployment
 
     ```
-    kubectl delete deployment pod-quota-demo --namespace=quota
+    $ kubectl delete deployment pod-quota-demo --namespace=quota
     ```
 
 ## Exercise 02: limit the CPU & memory available for a namespace
+---------
 
 1. Create ResourceQuota template in quota-mem-cpu.yaml
 
-    ```
+    ```yaml
     apiVersion: v1
     kind: ResourceQuota
     metadata:
@@ -186,12 +187,12 @@ We will use a separate namespace for this exercise.
     ```
 
     ```
-    kubectl apply -f quota-mem-cpu.yaml
+    $ kubectl apply -f quota-mem-cpu.yaml
     ```
 
-2. Now every container in the quote namespace must have a memory request, memory limit, cpu request, and cpu limit. Try to create a pod without these specs and see the error.
+1. Now every container in the quote namespace must have a memory request, memory limit, cpu request, and cpu limit. Try to create a pod without these specs and see the error. Create quota-pod.yaml.
 
-    ```file=quota-pod.yaml
+    ```yaml
     apiVersion: v1
     kind: Pod
     metadata:
@@ -204,12 +205,12 @@ We will use a separate namespace for this exercise.
     ```
 
     ```
-    kubectl apply -f quota-pod.yaml
+    $ kubectl apply -f quota-pod.yaml
     ```
 
-3. Now let's specify the limits for the pod and try to create it again
+1. Now let's specify the limits for the pod and try to create it again, modify quota-pod.yaml.
 
-    ```file=quota-pod.yaml
+    ```yaml
     apiVersion: v1
     kind: Pod
     metadata:
@@ -229,15 +230,15 @@ We will use a separate namespace for this exercise.
     ```
 
     ```
-    kubectl apply -f quota-pod.yaml
+    $ kubectl apply -f quota-pod.yaml
     ```
 
     The pod is created.
 
-4. See the resource usage in the namespace
+1. See the resource usage in the namespace
 
     ```
-    kubectl get resourcequota mem-cpu-demo --namespace=quota --output=yaml
+    $ kubectl get resourcequota mem-cpu-demo --namespace=quota --output=yaml
 
     status:
       hard:
@@ -252,9 +253,9 @@ We will use a separate namespace for this exercise.
         requests.memory: 600Mi
     ```
 
-5. Try to create the second pod replicas. This will exceed memory quota and throw an error.
+1. Try to create the second pod replicas. This will exceed memory quota and throw an error. Create quota-pod2.yaml.
 
-    ```file=quota-pod2.yaml
+    ```yaml
     apiVersion: v1
     kind: Pod
     metadata:
@@ -274,12 +275,13 @@ We will use a separate namespace for this exercise.
     ```
 
     ```
-    kubectl apply -f quota-pod2.yaml
+    $ kubectl apply -f quota-pod2.yaml
     ```
 
-6. Delete all running pods in the namespace
+1. Delete all running pods in the namespace
 
 ## Exercise 03 (optional): set the default request and limit for a namespace
+---------
 
 1. Create [LimitRange](https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/) object
 1. Create a pod without specifying limits and requests

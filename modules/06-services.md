@@ -38,7 +38,7 @@ More information about services: https://kubernetes.io/docs/concepts/services-ne
 
 1. Save the following file as `k8s/training/db-service.yml` and use `kubectl apply -f k8s/training/db-service.yml` command to create the db service:
 
-  ```
+  ```yaml
   apiVersion: v1
   kind: Service
   metadata:
@@ -58,7 +58,7 @@ More information about services: https://kubernetes.io/docs/concepts/services-ne
 
 1. Save the following file as `k8s/training/backend-service.yml` and use `kubectl apply -f k8s/training/backend-service.yml` command to create the backend service:
 
-    ```
+    ```yaml
     kind: Service
     apiVersion: v1
     metadata:
@@ -78,7 +78,7 @@ More information about services: https://kubernetes.io/docs/concepts/services-ne
 
 1. Save the following file as `k8s/training/frontend-service.yml` and use `kubectl apply -f k8s/training/frontend-service.yml` command to create the frontend service:
 
-    ```
+    ```yaml
     kind: Service
     apiVersion: v1
     metadata:
@@ -99,13 +99,13 @@ More information about services: https://kubernetes.io/docs/concepts/services-ne
 
 1. Retrieve the External IP for the frontend service: **This field may take a few minutes to appear as the load balancer is being provisioned**:
 
-  ```shell
+  ```
   $ kubectl get service frontend
   NAME             TYPE           CLUSTER-IP     EXTERNAL-IP    PORT(S)        AGE
   frontend         LoadBalancer   10.35.254.91   35.196.48.78   80:31088/TCP   1m
   ```
 
-1. Copy the external ip and open it in your browser. Make sure that the application is working correctly. 
+1. Copy the external ip and open it in your browser. Make sure that the application is working correctly.
 
 1. In GCP Cloud Console, find and investigate the external IP address that the `LoadBalancer` service type created
     * VPC Network -> External IP addresses
@@ -115,8 +115,7 @@ Exercises
 ---------
 1: Blue green deployment
     * Add the label "app=blue" to the frontend deployment.
-    * Modify frontend service to use the same label 
+    * Modify frontend service to use the same label
     * Create a second deployment with label "app=green". The deployment should contain the same application. (in a real scenario this should be a different version of the app, but for this exercise, you can use exactly the same app)
     * Change service selector to "app=green" and make sure that now the service switched to the second deployment.
     * Delete the old deployment
-

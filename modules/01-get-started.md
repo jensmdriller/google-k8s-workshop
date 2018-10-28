@@ -26,7 +26,7 @@ Google Cloud Platform Overview
 - SLAs define reliability guarantees for the APIs
 - three ways of access
   - API calls
-  - SGK commands
+  - SDK commands
   - Cloud Console web UI
 
 Google Cloud Computing service groups:
@@ -92,7 +92,7 @@ We recommend using Chrome browser during the workshop.
 1. Enter the username
 1. Enter the user password
 
-Sometimes GCP asks for a verification code when it detects logins from unusual locations. It is security measure to keep the account protected. If this happens, please ask the instructor for the verification code.
+  Note: *Sometimes GCP asks for a verification code when it detects logins from unusual locations. It is security measure to keep the account protected. If this happens, please ask the instructor for the verification code.*
 
 1. In the top left corner select the project "Cloud Project XX", where XX is your account number
 
@@ -128,10 +128,42 @@ $ gcloud services enable --async \
   stackdriver.googleapis.com
 ```
 
-The operation runs asynchronously. You can check if the APIs are enabled for the project
+The operation runs asynchronously. You can check if the APIs are enabled for the project, but enabling all these apis will take about 5m.
 
 ```
 $ gcloud services list --enabled
+```
+
+You can also connect to status of job by running command suggested:
+
+```
+$ gcloud beta services operations wait operations/acf.xxxx-xxxx-xxxx-xxxx-xxxx
+```
+
+Once that completes or you waited about 5 minutes you can check services again:
+
+```
+$ gcloud services list --enabled
+NAME                              TITLE
+bigquery-json.googleapis.com      BigQuery API
+cloudbuild.googleapis.com         Cloud Build API
+compute.googleapis.com            Compute Engine API
+container.googleapis.com          Kubernetes Engine API
+containerregistry.googleapis.com  Container Registry API
+logging.googleapis.com            Stackdriver Logging API
+monitoring.googleapis.com         Stackdriver Monitoring API
+oslogin.googleapis.com            Cloud OS Login API
+pubsub.googleapis.com             Cloud Pub/Sub API
+sourcerepo.googleapis.com         Cloud Source Repositories API
+stackdriver.googleapis.com        Stackdriver API
+storage-api.googleapis.com        Google Cloud Storage JSON API
+```
+
+Validate count:
+
+```
+$ gcloud services list --enabled|grep -v NAME|wc -l
+12
 ```
 
 If some APIs are not enabled retry in sync mode
@@ -174,7 +206,7 @@ Download the lab source code from GitHub
 
 Clone the lab repository in your cloud shell, then `cd` into that dir:
 
-  ```shell
+  ```
   $ git clone https://github.com/Altoros/google-k8s-workshop.git
   Cloning into 'google-k8s-workshop'...
   Username for 'https://github.com': altoros-training
@@ -186,4 +218,3 @@ Clone the lab repository in your cloud shell, then `cd` into that dir:
 
   $ cd google-k8s-workshop
   ```
-

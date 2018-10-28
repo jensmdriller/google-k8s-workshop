@@ -6,11 +6,15 @@ Make a breaking change to the `gceme` source, push it, and deploy it through the
 ```
 $ kubectl rollout undo deployment/gceme-backend-production -n prod
 deployment "gceme-backend-production"
+
 $ kubectl rollout undo deployment/gceme-frontend-production -n prod
 deployment "gceme-frontend-production"
+
 $ kubectl rollout undo deployment/mysql -n prod
+
 $ kubectl rollout status deployment/gceme-frontend-production -n prod
 deployment "gceme-frontend-production" successfully rolled out
+
 $ kubectl rollout history deployment/gceme-frontend-production -n prod
 ```
 
