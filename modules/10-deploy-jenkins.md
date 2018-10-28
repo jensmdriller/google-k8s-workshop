@@ -169,32 +169,32 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
 
     ```
     Master:
-    InstallPlugins:
-        - kubernetes:1.12.2
-        - workflow-aggregator:2.5
-        - workflow-job:2.24
-        - credentials-binding:1.16
-        - git:3.9.1
-        - google-oauth-plugin:0.6
-        - google-source-plugin:0.3
-    requests:
-        cpu: "1"
-        memory: "3500Mi"
-    limits:
-        cpu: "1"
-        memory: "3500Mi"
-    JavaOpts: "-Xms3500m -Xmx3500m"
-    ServiceType: LoadBalancer
+        InstallPlugins:
+            - kubernetes:1.12.2
+            - workflow-aggregator:2.5
+            - workflow-job:2.24
+            - credentials-binding:1.16
+            - git:3.9.1
+            - google-oauth-plugin:0.6
+            - google-source-plugin:0.3
+        requests:
+            cpu: "1"
+            memory: "3500Mi"
+        limits:
+            cpu: "1"
+            memory: "3500Mi"
+        JavaOpts: "-Xms3500m -Xmx3500m"
+        ServiceType: LoadBalancer
     Agent:
-    Enabled: false
+        Enabled: false
     Persistence:
-    Size: 100Gi
+        Size: 100Gi
     NetworkPolicy:
-    Enabled: false
-    ApiVersion: networking.k8s.io/v1
+        Enabled: false
+        ApiVersion: networking.k8s.io/v1
     rbac:
-    install: true
-    serviceAccountName: cd-jenkins
+        install: true
+        serviceAccountName: cd-jenkins
     ```
 
 Deploy Jenkins
@@ -203,7 +203,8 @@ Deploy Jenkins
 1. Deploy Jenkins chart using Helm
 
     ```shell
-    helm install --name cd \
+    ./helm install --name cd \
+        --namespace cd \
         -f jenkins/values.yaml \
         --version 0.16.6 \
         stable/jenkins \
@@ -223,7 +224,7 @@ Deploy Jenkins
 1. Wait until Jenkins pod goes to the `Running` state and the container is in the `READY` state:
 
     ```shell
-    $ kubectl get pods --watch
+    $ kubectl -n cd get pods --watch
     NAME                          READY     STATUS    RESTARTS   AGE
     cd-jenkins-7c786475dd-vbhg4   1/1       Running   0          1m
     ```
@@ -244,7 +245,6 @@ Deploy Jenkins
     NAME               TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
     cd-jenkins         LoadBalancer   10.47.255.13    35.236.21.7   8080:31027/TCP   3m
     cd-jenkins-agent   ClusterIP      10.47.246.125   <none>        50000/TCP        3m
-    kubernetes         ClusterIP      10.47.240.1     <none>        443/TCP          12m
     ```
 
 We installed Jenkins with [Kubernetes Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Kubernetes+Plugin). This plugin launches Pods with executors each time Jenkins master requests them. After Jenkins executor completed the task Jenkins Kubernetes plugin disposes the Pod and frees the resources.
@@ -261,7 +261,7 @@ Jenkins requires username and password. `admin` is default username. Helm genera
 1. Get an admin password
 
     ```shell
-    printf $(kubectl get secret cd-jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode);echo
+    printf $(kubectl -n cd get secret cd-jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode);echo
     ```
 
 1. Log in with username `admin` and your auto generated password.
