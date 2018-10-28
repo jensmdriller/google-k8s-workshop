@@ -14,10 +14,12 @@ Development branch
       container('kubectl') {
         // Create namespace if it doesn't exist
         sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
-        if ! kubectl -n ${env.BRANCH_NAME} get secret mysql
-        then
-          kubectl -n ${env.BRANCH_NAME} create secret generic mysql --from-literal=password=root
-        fi
+        script {
+          if ! kubectl -n ${env.BRANCH_NAME} get secret mysql
+          then
+            kubectl -n ${env.BRANCH_NAME} create secret generic mysql --from-literal=password=root
+          fi
+        }
         // Don't use public load balancing for development branches
         sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
         sh("sed -i.bak 's#REPLACE_WITH_IMAGE#${imageTag}#' ./k8s/dev/*.yaml")
