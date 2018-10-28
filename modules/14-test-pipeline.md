@@ -1,4 +1,4 @@
-Test the application
+Test Pipeline
 --------------------
 
 This version of pipeline does not run application tests. Let's fix it.

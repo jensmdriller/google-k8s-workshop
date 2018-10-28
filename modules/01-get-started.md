@@ -1,4 +1,4 @@
-Getting Started
+Getting Started with GCP
 ===============
 
 This guide will take you through the steps necessary to continuously deliver your software to end users by leveraging [Google Container Engine](https://cloud.google.com/container-engine/) and [Jenkins](https://jenkins.io) to orchestrate the software delivery pipeline.

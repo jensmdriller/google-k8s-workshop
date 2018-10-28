@@ -1,4 +1,4 @@
-Deploy
+Deploy Pipeline
 ------
 
 Modify the pipeline to deploy the application.
