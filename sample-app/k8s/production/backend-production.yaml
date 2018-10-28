@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/project-aleksey-zalesov/sample-k8s-app:1.0.0
+        image: REPLACE_WITH_IMAGE 
         env:
           - name: MYSQL_ROOT_PASSWORD
             valueFrom:

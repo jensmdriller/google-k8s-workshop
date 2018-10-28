@@ -28,7 +28,13 @@ spec:
     spec:
       containers:
       - name: backend
-        image: gcr.io/project-aleksey-zalesov/sample-k8s-app:1.0.0
+        image: REPLACE_WITH_IMAGE
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql
+                key: password
         resources:
           limits:
             memory: "500Mi"
@@ -38,7 +44,7 @@ spec:
           httpGet:
             path: /healthz
             port: 8080
-        command: ["sh", "-c", "app -port=8080 -db-host=db -db-password=root" ]
+        command: ["sh", "-c", "app -port=8080 -db-host=db -db-password=$MYSQL_ROOT_PASSWORD" ]
         ports:
         - name: backend
           containerPort: 8080

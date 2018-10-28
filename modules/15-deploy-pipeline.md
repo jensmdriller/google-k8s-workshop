@@ -3,6 +3,18 @@ Deploy Pipeline
 
 Modify the pipeline to deploy the application.
 
+1. Create `production` namespace
+    ```
+    $ kubectl create ns production
+    ```
+
+1. Create secret with the MySQL administrator password in the production namespace
+
+    ```
+    $ kubectl -n production create secret generic mysql --from-literal=password=root
+    secret/mysql created
+    ```
+
 1. Add container image with `kubectl`
 
   ```
@@ -22,7 +34,7 @@ Modify the pipeline to deploy the application.
       steps{
         container('kubectl') {
         // Change deployed image in canary to the one we just built
-          sh("sed -i.bak 's#gcr.io/project-aleksey-zalesov/sample-k8s-app:1.0.0#${imageTag}#' ./k8s/production/*.yaml")
+          sh("sed -i.bak 's#REPLACE_WITH_IMAGE#${imageTag}#' ./k8s/production/*.yaml")
           sh("kubectl --namespace=production apply -f k8s/services/")
           sh("kubectl --namespace=production apply -f k8s/production/")
           sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
