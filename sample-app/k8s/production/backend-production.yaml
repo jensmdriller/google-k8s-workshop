@@ -17,7 +17,7 @@ apiVersion: extensions/v1beta1
 metadata:
   name: gceme-backend-production
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       name: backend

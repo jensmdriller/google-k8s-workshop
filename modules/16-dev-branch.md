@@ -16,7 +16,7 @@ Development branch
         sh("kubectl get ns ${env.BRANCH_NAME} || kubectl create ns ${env.BRANCH_NAME}")
         // Don't use public load balancing for development branches
         sh("sed -i.bak 's#LoadBalancer#ClusterIP#' ./k8s/services/frontend.yaml")
-        sh("sed -i.bak 's#gcr.io/project-aleksey-zalesov/sample-k8s-app:1.0.0#${imageTag}#' ./k8s/dev/*.yaml")
+        sh("sed -i.bak 's#REPLACE_WITH_IMAGE#${imageTag}#' ./k8s/dev/*.yaml")
         sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
         sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
         echo 'To access your environment run `kubectl proxy`'
