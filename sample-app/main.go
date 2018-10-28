@@ -246,15 +246,17 @@ func GetOutboundIP() net.IP {
 
 func newInstance(db *gorm.DB) *Instance {
 	i := &Instance{}
-	notes := []Note{}
-	err := db.Find(&notes).Error
-	if err != nil {
-		i.Error = err.Error()
-		return i
-	}
-	i.Notes = []string{}
-	for _, note := range notes {
-		i.Notes = append(i.Notes, note.Note)
+	if db != nil {
+		notes := []Note{}
+		err := db.Find(&notes).Error
+		if err != nil {
+			i.Error = err.Error()
+			return i
+		}
+		i.Notes = []string{}
+		for _, note := range notes {
+			i.Notes = append(i.Notes, note.Note)
+		}
 	}
 	if !metadata.OnGCE() {
 		i.Local = true
