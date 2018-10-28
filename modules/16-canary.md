@@ -43,7 +43,7 @@ You can use the [labels](http://kubernetes.io/docs/user-guide/labels/) `env: pro
       steps{
         container('kubectl') {
         // Change deployed image in canary to the one we just built
-          sh("sed -i.bak 's#REPLACE_WITH_IMAGE#${imageTag}#' ./k8s/production/*.yaml")
+          sh("sed -i.bak 's#REPLACE_WITH_IMAGE#${imageTag}#' ./k8s/canary/*.yaml")
           sh("kubectl --namespace=production apply -f k8s/services/")
           sh("kubectl --namespace=production apply -f k8s/canary/")
           sh("echo http://`kubectl --namespace=production get service/${feSvcName} -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` > ${feSvcName}")
