@@ -10,7 +10,7 @@ Install Helm
 
 Helm is a package manager for Kubernetes. You will use it to install Jenkins.
 
-Helm packages called Charts contain application itself, metadata and deployment automation scripts. There is a [repository](https://github.com/helm/charts) with Charts for the most common products including Jenkins. 
+Helm packages called Charts contain application itself, metadata and deployment automation scripts. There is a [repository](https://github.com/helm/charts) with Charts for the most common products including Jenkins.
 
 Helm has two parts: `helm` CLI and Tiller Kubernetes service.
 
@@ -18,40 +18,40 @@ Install Helm into `$HOME` directory as Cloud Shell erases everything else on dis
 
 1. Download the Helm binary
 
-    ```shell
+    ```
     wget https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz
     ```
 
 1. Extract Helm client
 
-    ```shell
+    ```
     tar zxfv helm-v2.11.0-linux-amd64.tar.gz
     cp linux-amd64/helm .
     ```
 
 1. Grant `cluster-admin` role to your account
-    
+
     ```shell
     kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value account)
     ```
 
 1. Create `tiller` service account with the `cluster-admin` role
 
-    ```shell
+    ```
     kubectl create serviceaccount tiller --namespace kube-system
     kubectl create clusterrolebinding tiller-admin-binding --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
     ```
 
 1. Deploy Tiller
 
-    ```shell
+    ```
     ./helm init --service-account=tiller
     ./helm update
     ```
 
 1. Verify that both parts of Helm are up and running
 
-    ```shell
+    ```
     ./helm version
     Client: &version.Version{SemVer:"v2.11.0", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
     Server: &version.Version{SemVer:"v2.11.0", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
@@ -59,7 +59,7 @@ Install Helm into `$HOME` directory as Cloud Shell erases everything else on dis
 
 Configure Jenkins
 -----------------
-   
+
 Look at possible configuration options: https://github.com/helm/charts/blob/master/stable/jenkins/README.md#configuration
 
 1. Start with empty `jenkins/values.yaml`
@@ -72,7 +72,7 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
     - `NetworkPolicy`: limit network communications
     - `RBAC`: account and permissions configuration
 
-    ```file: jenkins/values.yaml
+    ```yaml
     Master:
     Agent:
     Persistence:
@@ -81,19 +81,19 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
     ```
 1. Set disk size to `100Gi`
 
-    ```
+    ```yaml
     Persistence:
         Size: 100Gi
     ```
 1. Disable network policy for now. You will enable it later while doing the Security module.
 
-    ```
+    ```yaml
     NetworkPolicy:
         Enabled: false
     ```
 1. Set the API version for the NetworkPolicy
 
-    ```
+    ```yaml
     NetworkPolicy:
         Enabled: false
         ApiVersion: networking.k8s.io/v1
@@ -101,7 +101,7 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
 
 1. Install Default RBAC roles and bindings
 
-    ```
+    ```yaml
     rbac:
         install: true
         serviceAccountName: cd-jenkins
@@ -109,13 +109,13 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
 
 1. Enable Kubernetes plugin jnlp-agent podTemplate
 
-    ```
+    ```yaml
     Agent:
         Enabled: false
     ```
 1. Set master resource limits (or requests?). 1 CPU and 3.5 Gb of memory.
 
-    ```
+    ```yaml
     Master:
         requests:
             cpu: "1"
@@ -127,14 +127,14 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
 
 1. Tell Jenkins to use all the memory available because it is a single process in container
 
-    ```
+    ```yaml
     Master:
         JavaOpts: "-Xms3500m -Xmx3500m"
     ```
 
 1. Expose Jenkins UI using Cloud Load Balancer
 
-    ```
+    ```yaml
     Master:
         ServiceType: LoadBalancer
     ```
@@ -151,7 +151,7 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
     - __google-oauth-plugin__: use credentials from the virtual machine metadata to access GCP services
     - __google-source-plugin__: credential provider to use GCP OAuth Credentials to access source code from Google Source Repositories
 
-    ```
+    ```yaml
     Master:
         InstallPlugins:
             - kubernetes:1.12.2
@@ -167,7 +167,7 @@ Look at possible configuration options: https://github.com/helm/charts/blob/mast
 
 1. Now the `jenkins/values.yaml` file should look like
 
-    ```
+    ```yaml
     Master:
         InstallPlugins:
             - kubernetes:1.12.2
@@ -202,7 +202,7 @@ Deploy Jenkins
 
 1. Deploy Jenkins chart using Helm
 
-    ```shell
+    ```
     ./helm install --name cd \
         --namespace cd \
         -f jenkins/values.yaml \
@@ -223,7 +223,7 @@ Deploy Jenkins
 
 1. Wait until Jenkins pod goes to the `Running` state and the container is in the `READY` state:
 
-    ```shell
+    ```
     $ kubectl -n cd get pods --watch
     NAME                          READY     STATUS    RESTARTS   AGE
     cd-jenkins-7c786475dd-vbhg4   1/1       Running   0          1m
@@ -240,7 +240,7 @@ Deploy Jenkins
 
 1. Now, check that the Jenkins Service was created properly:
 
-    ```shell
+    ```
     $ kubectl get svc -n cd
     NAME               TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
     cd-jenkins         LoadBalancer   10.47.255.13    35.236.21.7   8080:31027/TCP   3m

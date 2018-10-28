@@ -42,7 +42,7 @@ Ingress can provide load balancing, SSL termination and name-based virtual hosti
 
 1. Create file `k8s/training/ingress.yaml`
 
-    ```
+    ```yaml
     apiVersion: extensions/v1beta1
     kind: Ingress
     metadata:
@@ -67,13 +67,14 @@ Ingress can provide load balancing, SSL termination and name-based virtual hosti
     NAME            HOSTS   ADDRESS   PORTS   AGE
     gceme-ingress   *                 80      0s
     gceme-ingress   *     35.227.223.114   80    6m22s
+    ```
 
+    ```
     # in the second terminal
     $ kubectl apply -f k8s/training/ingress.yaml
     ```
 
-    Wait until you see IP in the address field. The application will be available as http://<ingress-ip>/gceme/
-    ```
+    Wait until you see IP in the address field. The application will be available as `http://<ingress-ip>/gceme/`
 
 1. In the cloud console go to 'Network servcies' -> 'Load balancing' and examine the created load balancer.
 
@@ -117,4 +118,3 @@ Exercise 3 (Optional): Use TLS
 1. Create a secret for `gceme` app. The secret should contain the certificate and private key.
 1. Add a `tls` section to the ingress definition. You can use the `tls` section from [this](https://kubernetes.io/docs/concepts/services-networking/ingress/#types-of-ingress) document for reference.
 1. Redeploy, open app in a web browser and examine certificate details. Use [this](https://www.ssl2buy.com/wiki/how-to-view-ssl-certificate-details-on-chrome-56) link to see how a certificate can be viewed in chrome.
-

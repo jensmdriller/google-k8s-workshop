@@ -31,10 +31,10 @@ Low-level infrastructure resources like Nodes and PersistentVolumes are not asso
     kubectl describe ns default
     ```
 
-1. Create a new namespace called test 
+1. Create a new namespace called test
 
     Save the following file as `ns.yaml`
-    ```
+    ```yaml
     apiVersion: v1
     kind: Namespace
     metadata:
@@ -91,6 +91,5 @@ Exercises
 
 1. Create production namespace
 
-    Create a namespace called `prod` using command line without YAML file.
-
-    Look at [Kubernetes documentation](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-namespace-em-) to find out exact syntax.
+   Create a namespace called `prod` using command line without YAML file.
+   Look at [Kubernetes documentation](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#-em-namespace-em-) to find out exact syntax.

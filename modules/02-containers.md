@@ -43,19 +43,19 @@ A deployment is a supervisor for pods and replica sets, giving you fine-grained 
 Build application Docker image
 ------------------------------
 
-1. Open the GCP console from your browser. [GCP Console](https://console.cloud.google.com/) and open the Cloud Shell. 
+1. Open the GCP console from your browser. [GCP Console](https://console.cloud.google.com/) and open the Cloud Shell.
 
-1. Navigate to the `google-k8s-workshop/sample-app` folder 
+1. Navigate to the `google-k8s-workshop/sample-app` folder
 
     ```
     $ cd google-k8s-workshop/sample-app
     ```
-    
+
     `google-k8s-workshop` repository should be cloned in the previous exercise.
 
 1. Set the `IMAGE` variable and build the Docker image
 
-    ```
+    ```shell
     export IMAGE=gcr.io/$PROJECT_ID/sample-k8s-app:1.0.0
     docker build . -t $IMAGE
     ```
@@ -75,9 +75,9 @@ Build application Docker image
     * Saves the container filesystem as a new Docker image  
 
 1. Push the image to the GCE container registry
-    ```
+    ```shell
     $ docker push $IMAGE
-    ``` 
+    ```
     No authentication is required because you are already authenticated by the Cloud Shell
 
 1. In GCP console open 'Container Registry' -> 'Images' and make sure that `sample-k8s-app` image is present
@@ -106,7 +106,7 @@ Run application in the Cloud Shell
 
 1. Run the backend container
 
-    ```
+    ```shell
     $ docker run --rm \
       --name backend \
       --link db:mysql \
@@ -125,7 +125,7 @@ Run application in the Cloud Shell
 
 1. Run the frontend container
 
-    ```
+    ```shell
     $ docker run --rm \
       --name frontend \
       --link backend \
@@ -155,16 +155,14 @@ Run application in the Cloud Shell
 
 1. Clean up
 
-    ```
+    ```shell
     $ docker stop $(docker ps -aq)
-    $ ocker rm $(docker ps -aq)
+    $ docker rm $(docker ps -aq)
     ```
 
 Optional Exercises
 -------------------
 
-### Use external volume for mysql container 
+### Use external volume for mysql container
 
 By default, mysql container stores its data inside the container file system. However, there is a possibility to store this data in a particular folder on the host and mount this folder to the container as a volume. Follow the instructions from the `Where to Store Data` section from the [mysql image documentation](https://hub.docker.com/_/mysql/) in order to do th at.
-
-

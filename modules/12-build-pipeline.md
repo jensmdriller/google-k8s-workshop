@@ -1,13 +1,13 @@
 Build Pipeline
 -------------------
 
-Create a pipeline that builds application images using Google Container Builder service. 
+Create a pipeline that builds application images using Google Container Builder service.
 
 1. Create an empty `Jenkinsfile` in the `sample-app` folder
 
 1. Define variables
 
-  ```
+  ```java
   def project = 'PROJECT_ID'
   def  appName = 'gceme'
   def  feSvcName = "${appName}-frontend"
@@ -24,7 +24,7 @@ Create a pipeline that builds application images using Google Container Builder 
 
 1. Create empty pipeline
 
-  ```
+  ```java
   pipeline {
     agent {}
     stages {}
@@ -37,7 +37,7 @@ Create a pipeline that builds application images using Google Container Builder 
 
 1. Add image with Google SDK installed
 
-  ```
+  ```java
       agent {
           kubernetes {
             label 'sample-app'
@@ -65,7 +65,7 @@ Create a pipeline that builds application images using Google Container Builder 
 
 1. Add phase to build the application image and push it to Container Registry
 
-  ```
+  ```java
   stages{
     stage('Build and push image with Container Builder') {
       steps {
@@ -103,7 +103,7 @@ Navigate to your Jenkins UI and follow these steps to configure a Pipeline job (
 1. Click `Add Source` and choose `git`
 
 1. Paste the **HTTPS clone URL** of your `sample-app` repo on Cloud Source Repositories into the **Project Repository** field.
-    It will look like: 
+    It will look like:
     ```
     $ echo https://source.developers.google.com/p/$PROJECT_ID/r/gceme
     https://source.developers.google.com/p/cloud-training-4-211211/r/gceme

@@ -21,13 +21,13 @@ Day 02
 ------
 
 - [Deploy Jenkins to GKE](modules/10-deploy-jenkins.md)
-- [Pipeline Prerequisites](modules/12-pipeline-prerequisites.md)
-- [Build Pipeline](modules/13-build-pipeline.md)
-- [Test Pipeline](modules/14-test-pipeline.md)
-- [Deploy Pipeline](modules/15-deploy-pipeline.md)
-- [Canary deployment](modules/16-canary.md)
-- [Development branch](modules/17-dev-branch.md)
-- [Deploy a breaking change, then roll back](modules/18-roll-back.md)
-- [Monitoring and Logging](modules/19-monitoring-logging.md)
-- [Security](modules/20-security.md)
+- [Pipeline Prerequisites](modules/11-pipeline-prerequisites.md)
+- [Build Pipeline](modules/12-build-pipeline.md)
+- [Test Pipeline](modules/13-test-pipeline.md)
+- [Deploy Pipeline](modules/14-deploy-pipeline.md)
+- [Canary deployment](modules/15-canary.md)
+- [Development branch](modules/16-dev-branch.md)
+- [Deploy a breaking change, then roll back](modules/17-roll-back.md)
+- [Monitoring and Logging](modules/18-monitoring-logging.md)
+- [Security](modules/19-security.md)
 - Summary

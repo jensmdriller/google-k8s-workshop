@@ -13,7 +13,7 @@ Objectives
 Enable monitoring
 -----------------
 
-By default, when you create a Kubernetes GKE cluster, the `--enable-cloud-monitoring` flag is automatically set. 
+By default, when you create a Kubernetes GKE cluster, the `--enable-cloud-monitoring` flag is automatically set.
 
 Go to the GKE console to check this: https://console.cloud.google.com/kubernetes/clusters/details/us-west2-b/jenkins-cd
 
@@ -51,7 +51,7 @@ Examine metrics
 
 1. Go to the Resources > Metrics Explorer dashboard
 
-![](img/metrics-explorer-dashboard.png)
+  ![](img/metrics-explorer-dashboard.png)
 
 1. Select the resource type "gce_instance"
 
@@ -120,7 +120,7 @@ Now let's add the second chart.
 Enable logging
 --------------
 
-By default, when you create Kubernetes GKE cluster, the `--enable-cloud-logging` flag is automatically set. 
+By default, when you create Kubernetes GKE cluster, the `--enable-cloud-logging` flag is automatically set.
 
 Go to the GKE console to check this: https://console.cloud.google.com/kubernetes/clusters/details/us-west2-b/jenkins-cd
 
@@ -141,7 +141,7 @@ View container logs
 
 1. Edit the filter
 
-```
+```shell
 resource.type="container"
 resource.labels.namespace_id="cd"
 resource.labels.cluster_name="jenkins-cd"
@@ -164,7 +164,7 @@ View system logs
 
 You can convert the filter to advanced mode and look at it:
 
-```
+```shell
 resource.type="gke_cluster"
 resource.labels.cluster_name="jenkins-cd"
 ```
@@ -185,7 +185,7 @@ Optional exercises
 
 ### Alerts
 
-Stackdriver allows you to set alerts based on the events. Create the alert that sends an e-mail when the node pool is resized. 
+Stackdriver allows you to set alerts based on the events. Create the alert that sends an e-mail when the node pool is resized.
 
 To do this:
 
@@ -194,7 +194,7 @@ To do this:
   - set up the alert in Stackdriver dashboard
   - delete one node from the cluster node pool
   - see the e-mail arrived at you mailbox
-  
+
 Questions:
 
 1. How to evacuate pods from the node that will be removed from the pool?

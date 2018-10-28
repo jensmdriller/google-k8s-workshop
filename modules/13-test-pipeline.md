@@ -5,7 +5,7 @@ This version of pipeline does not run application tests. Let's fix it.
 
 1. Add `golang` container to the agent
 
-  ```
+  ```yaml
   - name: golang
     image: golang:1.10
     command:
@@ -15,7 +15,7 @@ This version of pipeline does not run application tests. Let's fix it.
 
 1. Create test stage righ before the build stage
 
-  ```
+  ```java
   stage('Test') {
     steps {
       container('golang') {

@@ -17,7 +17,7 @@ Modify the pipeline to deploy the application.
 
 1. Add container image with `kubectl`
 
-  ```
+  ```yaml
   - name: kubectl
     image: gcr.io/cloud-builders/kubectl
     command:
@@ -27,7 +27,7 @@ Modify the pipeline to deploy the application.
 
 1. Add deployment stage
 
-  ```
+  ```java
   stage('Deploy Production') {
       // Production branch
       when { branch 'master' }

@@ -25,7 +25,7 @@ It will take some time for updating the cluster during which you won't be able t
 
 Create a PSP file called `psp.yaml`:
 
-```
+```yaml
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
@@ -82,9 +82,8 @@ $ kubectl apply -f psp.yaml
 
 Typically `Pods` are created by `Deployments`, `ReplicaSets`, not by the user directly. We need to grant permissions for using this policy to the default account.
 
-```
 role.yaml:
-
+```yaml
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -98,11 +97,14 @@ rules:
   - restricted
   verbs:
   - use
+```
 
+```
 $ kubectl apply -f role.yaml
+```
 
 bind.yaml:
-
+```yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
@@ -117,7 +119,9 @@ subjects:
 - kind: ServiceAccount # Omit apiGroup
   name: default
   namespace: default
-  
+```
+
+```
 $ kubectl apply -f binding.yaml
 ```
 
@@ -194,9 +198,9 @@ First let's enable network policy enforcement on the GKE cluster.
 It is a two-step process.
 
 ```
-$ gcloud container clusters update jenkins-cd \
+gcloud container clusters update jenkins-cd \
    --update-addons=NetworkPolicy=ENABLED
-$ gcloud container clusters update jenkins-cd \
+gcloud container clusters update jenkins-cd \
    --enable-network-policy
 ```
 
@@ -212,9 +216,7 @@ Let's see how to use network policy for blocking the external traffic for a `Pod
 
 Create file called `deny-egress.yaml`:
 
-```
-deny-egress.yaml:
-
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -232,7 +234,9 @@ spec:
       protocol: UDP
     - port: 53
       protocol: TCP
+```
 
+```
 $ kubectl apply -f deny-egress.yaml
 ```
 
@@ -325,9 +329,9 @@ Optional Exercises
 
 ### Scanning images in pipeline
 
-Your pipeline is a good place to put code that scans images for vulnerabilities. Let's integrate Clair image vulnerability scanning into the Jenins pipeline. 
+Your pipeline is a good place to put code that scans images for vulnerabilities. Let's integrate Clair image vulnerability scanning into the Jenins pipeline.
 
-Use may use https://github.com/protacon/ci-image-vulnerability-scan as a reference. 
+Use may use https://github.com/protacon/ci-image-vulnerability-scan as a reference.
 
 Build the `sample-app` using the latest golang image. The build should pass.
 

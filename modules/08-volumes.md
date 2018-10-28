@@ -45,7 +45,7 @@ In this lab you will add persistent storage volume to the MySQL pod.
 
 1. Add Persistent Volume Claim definition to `sample-app/k8s/training/data-volume.yaml`
 
-    ```
+    ```yaml
     kind: PersistentVolumeClaim
     apiVersion: v1
     metadata:
@@ -57,10 +57,10 @@ In this lab you will add persistent storage volume to the MySQL pod.
         requests:
           storage: 200Gi
     ```
- 
+
 1. Add mysql deployment definition to `k8s/training/db-persistent.yaml`
 
-    ```
+    ```yaml
     apiVersion: extensions/v1beta1
     kind: Deployment
     metadata:
@@ -141,7 +141,7 @@ Now you have MySQL database running inside Kubernetes cluster on GCP that stores
 Exercise 2 (Optional): Static persistent volume provisioning
 ------------------------------------------------------------
 
-1. Delete mysql deployment and persistent volume claim. 
+1. Delete mysql deployment and persistent volume claim.
 1. Manually create a persistent disk in GCE. (Compute engine -> Disks -> Create disk, use `source type = none` to create an empty disk) or use the following command
 
     ```
@@ -150,7 +150,7 @@ Exercise 2 (Optional): Static persistent volume provisioning
 
 1. Change mysql deployment to use your persistent disk instead of persistent volume claim. Find `gcePersistentDisk` section in [this](https://kubernetes.io/docs/concepts/storage/volumes/) document for reference.
 
-### Exercise 3 (Optional): Observe how persistent volume is reattached 
+### Exercise 3 (Optional): Observe how persistent volume is reattached
 
 1. Open gcme application, enter some notes.
 1. Exec inside mysql pod and kill mysql process.

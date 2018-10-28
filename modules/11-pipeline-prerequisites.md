@@ -4,7 +4,7 @@ Pipeline Prerequisites
 Module objectives
 -----------------
 
-- create a repository for the sample app source 
+- create a repository for the sample app source
 - add your service account credentials
 
 Create a repository for the sample app source
@@ -15,28 +15,28 @@ Here you'll create your own copy of the `gceme` sample app in [Cloud Source Repo
 1. Change directories to `sample-app` of the repo you cloned previously, then initialize the git repository.
 
     ```shell
-    # make sure you are in the sample-app directory
-    $ git init
-    $ git config credential.helper gcloud.sh
-    $ gcloud source repos create gceme
-    $ git remote add origin https://source.developers.google.com/p/$PROJECT_ID/r/gceme
+    # make sure you are still in sample-app directory
+    git init
+    git config credential.helper gcloud.sh
+    gcloud source repos create gceme
+    git remote add origin https://source.developers.google.com/p/$PROJECT_ID/r/gceme
     ```
 
 1. Ensure git is able to identify you:
 
-    ```shell
+    ```
     $ git config --global user.email "YOUR-EMAIL-ADDRESS"
     $ git config --global user.name "YOUR-NAME"
     ```
 
 1. Add, commit, and push all the files:
 
-    ```shell
-    $ git add .
-    $ git commit -m "Initial commit"
-    $ git push origin master
     ```
-    
+    git add .
+    git commit -m "Initial commit"
+    git push origin master
+    ```
+
 Now make a small change to the `Jenkinsfile` to make first build pass. You need to specify your project ID
 
 ```
@@ -51,11 +51,13 @@ cloud-training-4-211211
 
 # Change the line and save file
 def project = 'cloud-training-4-211211`
+```
 
+```
 # Push you changes
-$ git add Jenkinsfile
-$ git commit -m "Change the project ID"
-$ git push --set-upstream origin master
+git add Jenkinsfile
+git commit -m "Change the project ID"
+git push --set-upstream origin master
 ```
 
 Add your service account credentials
@@ -64,7 +66,7 @@ Add your service account credentials
 First, we will need to configure our GCP credentials in order for Jenkins to be able to access our code repository
 
 1. In the Jenkins UI, click “Credentials” on the left
-1. Click on the “(global)” link 
+1. Click on the “(global)” link
 1. Click “Add Credentials” on the left
 1. From the “Kind” dropdown, select “Google Service Account from metadata”
 1. Click “OK”
