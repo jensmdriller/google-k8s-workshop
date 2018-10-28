@@ -16,7 +16,7 @@ In this case we have 1 out of 5 of our frontends running the canary code and the
 
 You can use the [labels](http://kubernetes.io/docs/user-guide/labels/) `env: production` and `env: canary` in Google Cloud Monitoring in order to monitor the performance of each version individually.
 
-1. In the `sample-app` repository in Cloud Shell Editor open `html.go` and replace the word `blue` with `orange` (there should be exactly two occurrences):
+1. In the `sample-app` repository in Cloud Shell Editor open `templates/base.html` and replace the word `blue` with `orange` (there should be exactly 4 occurrences):
 
   ```html
   //snip
@@ -34,7 +34,7 @@ You can use the [labels](http://kubernetes.io/docs/user-guide/labels/) `env: pro
    //snip
    ```
 
-1. `git add html.go main.go`, then `git commit -m "Version 2"`, and finally `git push origin canary` your change.
+1. `git add templates/base.html main.go`, then `git commit -m "Version 2"`, and finally `git push origin canary` your change.
 
 1. When your change has been pushed to the Git repository, navigate to your Jenkins job. Click the "Scan Multibranch Pipeline Now" button.
 
@@ -44,10 +44,10 @@ You can use the [labels](http://kubernetes.io/docs/user-guide/labels/) `env: pro
 
   ![](docs/img/console.png)
 
-1. Track the output for a few minutes and watch for the `kubectl --namespace=prod apply...` to begin. When it starts, start new terminal that's polling canary's `/version` URL and observe it start to change in some of the requests:
+1. Track the output for a few minutes and watch for the `kubectl --namespace=production apply...` to begin. When it starts, start new terminal that's polling canary's `/version` URL and observe it start to change in some of the requests:
 
    ```
-   $ export FRONTEND_SERVICE_IP=$(kubectl get -o jsonpath="{.status.loadBalancer.ingress[0].ip}"  --namespace=prod services gceme-frontend)
+   $ export FRONTEND_SERVICE_IP=$(kubectl get -o jsonpath="{.status.loadBalancer.ingress[0].ip}"  --namespace=production services gceme-frontend)
    $ while true; do curl http://$FRONTEND_SERVICE_IP/version; sleep 1;  done
    1.0.0
    1.0.0
