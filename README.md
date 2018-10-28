@@ -21,7 +21,7 @@ Day 02
 ------
 
 - [Deploy Jenkins to GKE](modules/10-deploy-jenkins.md)
-- [Create a pipeline](modules/12-pipeline-prerequisites.md)
+- [Pipeline Prerequisites](modules/12-pipeline-prerequisites.md)
 - [Build Pipeline](modules/13-build-pipeline.md)
 - [Test Pipeline](modules/14-test-pipeline.md)
 - [Deploy Pipeline](modules/15-deploy-pipeline.md)

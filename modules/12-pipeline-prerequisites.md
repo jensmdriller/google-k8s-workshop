@@ -1,4 +1,4 @@
-Create a pipeline
+Pipeline Prerequisites
 =================
 
 Module objectives
@@ -64,11 +64,11 @@ Add your service account credentials
 First, we will need to configure our GCP credentials in order for Jenkins to be able to access our code repository
 
 1. In the Jenkins UI, click “Credentials” on the left
-1. Click either of the “(global)” links (they both route to the same URL)
+1. Click on the “(global)” link 
 1. Click “Add Credentials” on the left
 1. From the “Kind” dropdown, select “Google Service Account from metadata”
 1. Click “OK”
 
-You should now see 2 Global Credentials. Make a note of the name of the second credential as you will reference this in Phase 2:
+You should now see your Global Credentials. Make a note of the name of the credential as you will reference it in Phase 2:
 
 ![](docs/img/jenkins-credentials.png)
