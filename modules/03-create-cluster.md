@@ -6,8 +6,6 @@ Module objectives
 
 - create a cluster using `gcloud` tool
 - configure `kubectl` tool
-- install Helm client
-- deploy Tiller
 
 ---
 
