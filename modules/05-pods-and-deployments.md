@@ -22,7 +22,8 @@ In this section, you will deploy the mysql database, `gceme` frontend and backen
 1. Create the manifest to deploy MySQL database as k8s/training/db.yml:
 
     ```yaml
-    apiVersion: extensions/v1beta1 kind: Deployment
+    apiVersion: extensions/v1beta1 
+    kind: Deployment
     metadata:
       name: mysql
       labels:
