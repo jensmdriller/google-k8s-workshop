@@ -261,11 +261,11 @@ There is already network policy inside the Jenkins Helm chart. In this exercise 
 
 1. Enable network policy in the Jenkins chart configuration
 
-  Go to `jenkins/values.yaml` and add line `Enabled: true` in the `NetworkPolicy` section.
+    Go to `jenkins/values.yaml` and add line `Enabled: true` in the `NetworkPolicy` section.
 
 1. Update the Helm chart
 
-  `./helm upgrade cd stable/jenkins -f jenkins/values.yaml --wait`
+    `./helm upgrade cd stable/jenkins -f jenkins/values.yaml --wait`
 
 1. Get the policy specification and look through it
 
@@ -307,14 +307,14 @@ Image security scanning
 
 1. Deploy Clair to Kubernetes
 
-  ```
-  git clone https://github.com/coreos/clair
-  cd clair/contrib/helm
-  cp clair/values.yaml ~/my_custom_values.yaml
-  vi ~/my_custom_values.yaml
-  helm dependency update clair
-  helm install clair -f ~/my_custom_values.yaml
-  ```
+    ```
+    git clone https://github.com/coreos/clair
+    cd clair/contrib/helm
+    cp clair/values.yaml ~/my_custom_values.yaml
+    vi ~/my_custom_values.yaml
+    helm dependency update clair
+    helm install clair -f ~/my_custom_values.yaml
+    ```
 
 1. Install `calirctl` - see https://github.com/jgsqware/clairctl
 

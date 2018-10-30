@@ -38,20 +38,20 @@ Go to Monitoring secltion of the Web Console. If you see "Create your free Stack
 
 1. Select "No Reports" when asked
 
-  ![](img/stackdriver-emails.png)
+    ![](img/stackdriver-emails.png)
 
 1. Launch Monitoring
 
 1. You should see Stachdriver dashboard now
 
-  ![](img/stackdriver-dashboard.png)
+    ![](img/stackdriver-dashboard.png)
 
 Examine metrics
 ---------------
 
 1. Go to the Resources > Metrics Explorer dashboard
 
-  ![](img/metrics-explorer-dashboard.png)
+    ![](img/metrics-explorer-dashboard.png)
 
 1. Select the resource type "gce_instance"
 
@@ -65,7 +65,7 @@ Examine metrics
 
 1. Filter to the Jenkins pod
 
-  ![](img/jenkins-filter.png)
+    ![](img/jenkins-filter.png)
 
 1. View the graph of CPU usage by Jenkins master
 
@@ -79,7 +79,7 @@ In this exercise, you will create a dashboard that shows metrics about GKE clust
 
 1. Click Dashboards > "Create new dashboard" button
 
-  ![](img/create-dashboard.png)
+    ![](img/create-dashboard.png)
 
 1. Click "Add Chart" button
 
@@ -95,7 +95,7 @@ In this exercise, you will create a dashboard that shows metrics about GKE clust
 
 1. Save the chart
 
-Now let's add the second chart.
+    Now let's add the second chart.
 
 1. Click "Add Chart" button
 
@@ -115,7 +115,7 @@ Now let's add the second chart.
 
 1. Name your dashboard "Jenkins CI/CD"
 
-  ![](img/jenkins-ci-cd.png)
+![](img/jenkins-ci-cd.png)
 
 Enable logging
 --------------
@@ -137,24 +137,24 @@ View container logs
 
 1. Switch to advanced mode
 
-  ![](img/logging-advanced-filter.png)
+    ![](img/logging-advanced-filter.png)
 
 1. Edit the filter
 
-```shell
-resource.type="container"
-resource.labels.namespace_id="cd"
-resource.labels.cluster_name="jenkins-cd"
-resource.labels.container_name="cd-jenkins"
-```
+    ```shell
+    resource.type="container"
+    resource.labels.namespace_id="cd"
+    resource.labels.cluster_name="jenkins-cd"
+    resource.labels.container_name="cd-jenkins"
+    ```
 
-You will see logs from the Jenkins master container.
+    You will see logs from the Jenkins master container.
 
-While editing the filter, you can use auto competition ("Control+Space") to explore possible options.
+    While editing the filter, you can use auto competition ("Control+Space") to explore possible options.
 
 1. Find the record that shows you Jenkins was started and ready to serve requests
 
-View system logs
+    View system logs
 
 1. Switch back to basic mode
 
@@ -217,7 +217,7 @@ To track such events we will use "Log-based metrics".
 
 Questions:
 
-What other events that are not meaningful by themselves, but their rate or total quantity are important for the cluster operations?
+1. What other events that are not meaningful by themselves, but their rate or total quantity are important for the cluster operations?
 
 ---
 ### Custom metrics
