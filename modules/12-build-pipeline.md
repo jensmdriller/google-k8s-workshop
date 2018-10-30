@@ -7,83 +7,83 @@ Create a pipeline that builds application images using Google Container Builder 
 
 1. Define variables
 
-  ```java
-  def project = 'PROJECT_ID'
-  def  appName = 'gceme'
-  def  feSvcName = "${appName}-frontend"
-  def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
-  ```
+    ```java
+    def project = 'PROJECT_ID'
+    def  appName = 'gceme'
+    def  feSvcName = "${appName}-frontend"
+    def  imageTag = "gcr.io/${project}/${appName}:${env.BRANCH_NAME}.${env.BUILD_NUMBER}"
+    ```
 
-  Change PROJECT_ID to the content of $PROJECT_ID variable.
+    Change PROJECT_ID to the content of $PROJECT_ID variable.
 
-  `appName` is the name of sample application
+    `appName` is the name of sample application
 
-  `feSvcName` name of the frontend service to expose the app
+    `feSvcName` name of the frontend service to expose the app
 
-  `imageTag` must be unique identifier for the Docker image. It uses the BUILD_NUMBER and BRANCH_NAME enviornmental variables
+    `imageTag` must be unique identifier for the Docker image. It uses the BUILD_NUMBER and BRANCH_NAME enviornmental variables
 
 1. Create empty pipeline
 
-  ```java
-  pipeline {
-    agent {}
-    stages {}
-  }
-  ```
+    ```java
+    pipeline {
+      agent {}
+      stages {}
+    }
+    ```
 
-  `agent` section describes container images that Jenkins may use to build the application
+    `agent` section describes container images that Jenkins may use to build the application
 
-  `stages` define structure of the pipeline. It is a list of `stage()` objects and transitioning rules
+    `stages` define structure of the pipeline. It is a list of `stage()` objects and transitioning rules
 
 1. Add image with Google SDK installed
 
-  ```java
-      agent {
-          kubernetes {
-            label 'sample-app'
-            defaultContainer 'jnlp'
-            yaml """
-  apiVersion: v1
-  kind: Pod
-  metadata:
-  labels:
-    component: ci
-  spec:
-    serviceAccountName: cd-jenkins
-    containers:
-    - name: gcloud
-      image: gcr.io/cloud-builders/gcloud
-      command:
-      - cat
-      tty: true
-  """
-  }
-          }
-  ```
+    ```java
+        agent {
+            kubernetes {
+              label 'sample-app'
+              defaultContainer 'jnlp'
+              yaml """
+    apiVersion: v1
+    kind: Pod
+    metadata:
+    labels:
+      component: ci
+    spec:
+      serviceAccountName: cd-jenkins
+      containers:
+      - name: gcloud
+        image: gcr.io/cloud-builders/gcloud
+        command:
+        - cat
+        tty: true
+    """
+    }
+            }
+    ```
 
-  Jenkins uses `cd-jenkins` service account to start build containers.
+    Jenkins uses `cd-jenkins` service account to start build containers.
 
 1. Add phase to build the application image and push it to Container Registry
 
-  ```java
-  stages{
-    stage('Build and push image with Container Builder') {
-      steps {
-        container('gcloud') {
-          sh "PYTHONUNBUFFERED=1 gcloud container builds submit -t ${imageTag} ."
+    ```java
+    stages{
+      stage('Build and push image with Container Builder') {
+        steps {
+          container('gcloud') {
+            sh "PYTHONUNBUFFERED=1 gcloud builds submit -t ${imageTag} ."
+          }
         }
       }
     }
-  }
-  ```
+    ```
 
 1. Commit changes to the `master` branch
 
-  ```
-  git add .
-  git commit "Add build pipeline"
-  git push origin master
-  ```
+    ```
+    git add .
+    git commit -m "Add build pipeline"
+    git push origin master
+    ```
 
 In the next step you will run the pipeline and see Docker image created in the registry.
 
@@ -92,7 +92,7 @@ Create a job
 
 This lab uses [Jenkins Pipeline](https://jenkins.io/solutions/pipeline/) to define builds as groovy scripts.
 
-Navigate to your Jenkins UI and follow these steps to configure a Pipeline job (hot tip: you can find the IP address of your Jenkins install with `kubectl get svc cd-jenkins --namespace jenkins`):
+Navigate to your Jenkins UI and follow these steps to configure a Pipeline job (hot tip: you can find the IP address of your Jenkins install with `kubectl get svc cd-jenkins --namespace cd`):
 
 1. Click the “Jenkins” link in the top left of the interface
 

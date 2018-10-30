@@ -19,6 +19,10 @@ Here you'll create your own copy of the `gceme` sample app in [Cloud Source Repo
     git init
     git config credential.helper gcloud.sh
     gcloud source repos create gceme
+    ```
+
+    Once repo is created we will have to add remote
+    ```
     git remote add origin https://source.developers.google.com/p/$PROJECT_ID/r/gceme
     ```
 
@@ -36,29 +40,6 @@ Here you'll create your own copy of the `gceme` sample app in [Cloud Source Repo
     git commit -m "Initial commit"
     git push origin master
     ```
-
-Now make a small change to the `Jenkinsfile` to make first build pass. You need to specify your project ID
-
-```
-# Open Jenkinsfile
-
-# Find the line
-def project = 'PROJECT_ID'
-
-# Learn your project ID
-$ echo $PROJECT_ID
-cloud-training-4-211211
-
-# Change the line and save file
-def project = 'cloud-training-4-211211`
-```
-
-```
-# Push you changes
-git add Jenkinsfile
-git commit -m "Change the project ID"
-git push --set-upstream origin master
-```
 
 Add your service account credentials
 ------------------------------------

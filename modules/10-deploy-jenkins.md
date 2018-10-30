@@ -277,4 +277,4 @@ Optional exercises
 ------------------
 
 1. What resources were created during Jenkins deployment?
-1. If the service was exposed internally using `ClusterIP` how can you access it?
+1. If the service was exposed internally using `ClusterIP` how can you access it? How about via `port-forward`?
