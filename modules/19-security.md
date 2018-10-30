@@ -200,6 +200,9 @@ It is a two-step process.
 ```
 gcloud container clusters update jenkins-cd \
    --update-addons=NetworkPolicy=ENABLED
+```
+
+```
 gcloud container clusters update jenkins-cd \
    --enable-network-policy
 ```
