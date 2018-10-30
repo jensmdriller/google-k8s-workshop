@@ -103,7 +103,7 @@ rules:
 $ kubectl apply -f role.yaml
 ```
 
-bind.yaml:
+binding.yaml:
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
