@@ -10,7 +10,7 @@ deployment "gceme-backend-production"
 $ kubectl rollout undo deployment/gceme-frontend-production -n production
 deployment "gceme-frontend-production"
 
-$ kubectl rollout undo deployment/mysql -n prod
+$ kubectl rollout undo deployment/mysql -n production
 
 $ kubectl rollout status deployment/gceme-frontend-production -n production
 deployment "gceme-frontend-production" successfully rolled out
