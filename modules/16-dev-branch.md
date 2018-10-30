@@ -25,7 +25,7 @@ Development branch
           sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/services/")
           sh("kubectl --namespace=${env.BRANCH_NAME} apply -f k8s/dev/")
           echo 'To access your environment run `kubectl proxy`'
-          echo "Then access your service via http://localhost:8001/api/v1/proxy/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:80/"
+          echo "Then access your service via http://localhost:8001/api/v1/namespaces/${env.BRANCH_NAME}/services/${feSvcName}:http/proxy/"
           echo 'Or better yet use `port-forward`'
           echo "kubectl -n ${env.BRANCH_NAME} port-forward \$(kubectl -n new-feature get pods -l role=frontend -o jsonpath='{.items[].metadata.name}') 8080:80"
         }
@@ -68,7 +68,7 @@ Development branch
     [Pipeline] echo
     To access your environment run `kubectl proxy`
     [Pipeline] echo
-    Then access your service via http://localhost:8001/api/v1/proxy/namespaces/new-feature/services/gceme-frontend:80/
+    Then access your service via http://localhost:8001/api/v1/namespaces/new-feature/services/gceme-frontend:http/proxy/
     [Pipeline] }
     ```
 
