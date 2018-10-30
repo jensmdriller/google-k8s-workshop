@@ -23,3 +23,5 @@ Optional exercises
 
 1. Create pipeline that deploys app into two production namespaces, one after another. This emulates multi-datacenter scenario.
 1. Say the management of the company decides to deploy automatically only to staging and deployment to prod now requires manual confirmation from the operator. How can you implement this scenario using Jenkins pipelines?
+1. Record command used to change-cause in rollout history of deployment. 
+1. Add custom change-cause message by adding `kubectl -n <env> annotate deployment gceme-frontend-<env> kubernetes.io/change-cause='<CUSTOM>'`
