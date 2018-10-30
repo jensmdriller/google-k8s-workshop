@@ -20,6 +20,7 @@ Day 01
 Day 02
 ------
 
+- [kubectl Auto Completion](modules/20-extra-autocompletion.md)
 - [Deploy Jenkins to GKE](modules/10-deploy-jenkins.md)
 - [Pipeline Prerequisites](modules/11-pipeline-prerequisites.md)
 - [Build Pipeline](modules/12-build-pipeline.md)
