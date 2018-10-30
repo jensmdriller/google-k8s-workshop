@@ -35,7 +35,7 @@ Create a pipeline that builds application images using Google Container Builder 
 
     `stages` define structure of the pipeline. It is a list of `stage()` objects and transitioning rules
 
-1. Add image with Google SDK installed
+1. Add image with Google SDK installed **(YAML which we are adding below after three double quotes """ cares about spacing, pay especial attention to that as you add more to this file. Issues it will cause is slave pod will not start)**
 
     ```java
         agent {
